@@ -1,0 +1,22 @@
+# Terraform directories and files
+**/.terraform/*
+**/terraform-provider*/*
+*.tfstate
+*.tfstate.*
+*.terraform*
+crash.log
+
+# Files that may contain secrets
+terraform.tfvars
+*kube_config.yml*
+*-ssh_private_key.pem*
+*-ssh_public_key.pem*
+projects/google-cloud/sles_startup_script.sh
+projects/google-cloud/default.ipxe
+projects/google-cloud/create_cloud_config.yaml
+projects/google-cloud/join_cloud_config.yaml
+projects/google-cloud/harvester_startup_script.sh
+
+# Temporary files
+**/*.swp
+.DS_Store
