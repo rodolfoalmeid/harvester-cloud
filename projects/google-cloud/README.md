@@ -7,7 +7,6 @@
     - `project_id` to specify in which Project the resources will be created
     - `region` to specify the Google region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
-    - `harvester_cluster_size` To specify the size Harvester nodes created.(small or medium)
 - Make sure you are logged into your Google Account from your local Terminal. See the preparatory steps [here](../../modules/google-cloud/README.md).
 
 #### Terraform Apply
