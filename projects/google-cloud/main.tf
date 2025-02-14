@@ -57,10 +57,10 @@ resource "local_file" "default_ipxe_script_config" {
 
 resource "local_file" "create_cloud_config_yaml" {
   content = templatefile("${local.create_cloud_config_template_file}", {
-    version  = var.harvester_version,
-    token    = var.harvester_first_node_token,
-    hostname = var.prefix,
-    password = var.harvester_password
+    version                  = var.harvester_version,
+    token                    = var.harvester_first_node_token,
+    hostname                 = var.prefix,
+    password                 = var.harvester_password
     cluster_registration_url = var.rancher_api_url != "" ? rancher2_cluster.rancher_cluster[0].cluster_registration_token[0].manifest_url : ""
   })
   file_permission = "0644"
@@ -190,7 +190,6 @@ resource "local_file" "kube_config_yaml" {
 }
 
 resource "rancher2_cluster" "rancher_cluster" {
-  name        = var.prefix
-  count       = var.rancher_api_url != "" ? 1 : 0
-  description = "${var.prefix} created by Terraform"
+  name  = var.prefix
+  count = var.rancher_api_url != "" ? 1 : 0
 }

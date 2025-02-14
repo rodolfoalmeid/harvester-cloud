@@ -19,6 +19,7 @@ terraform {
       source  = "hashicorp/helm"
       version = "3.0.0-pre1"
     }
+
     rancher2 = {
       source  = "rancher/rancher2"
       version = "5.1.0"
