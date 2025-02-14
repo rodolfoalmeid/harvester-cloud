@@ -33,12 +33,12 @@ tofu init -upgrade && tofu apply -auto-approve
 tofu destroy -auto-approve
 ```
 
-## How to execute kubectl commands to Harvester cluster
+## How to execute `kubectl` commands to Harvester cluster
 
 #### Run the following command
 
 ```bash
-export KUBECONFIG=<prefix>_kube_config.yaml
+export KUBECONFIG=<PREFIX>_kube_config.yaml
 ```
 
 ## How to access Google VMs
@@ -57,18 +57,19 @@ ssh -oStrictHostKeyChecking=no -i <PREFIX>-ssh_private_key.pem sles@<PUBLIC_IPV4
 ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harvester_password or from join/create_cloud_config.yaml file in the current folder
 ```
 
-# DEMOSTRATION (Harvester with 3 small nodes)
+# DEMOSTRATION 1 - Cluster Harvester with minimal possible configuration ("small" size)
 
-#### Terraform execution process and Harvester UI access
+#### Configure the terraform.tfvars file with the minimum necessary configurations
 
 ```console
 $ cat terraform.tfvars
-prefix = "jlagos"
-project_id = "<project-id>"
-region = "europe-west8"
+prefix               = "jlagos"
+project_id           = "<PROJECT_ID>"
+region               = "europe-west8"
 harvester_node_count = 3
-harvester_cluster_size = "small"
 ```
+
+#### Demonstration of applying Terraform files until accessing the Harvester UI
 
 ![](../../images/GCP_PROJ_README_1.png)
 ![](../../images/GCP_PROJ_README_2.png)
@@ -76,14 +77,47 @@ harvester_cluster_size = "small"
 ![](../../images/GCP_PROJ_README_4.png)
 ![](../../images/GCP_PROJ_README_5.png)
 
-#### SSH into GCP VM
+#### How to log in via SSH into the Google Cloud VM
 
 ![](../../images/GCP_PROJ_README_6.png)
 
-#### SSH from GCP VM to Harvester Nested VM
+#### How to log in via SSH into nested VMs (Harvester nodes)
 
 ![](../../images/GCP_PROJ_README_7.png)
 
-#### Kubectl commands execution
+#### How to run `kubectl` commands on Harvester cluster
 
 ![](../../images/GCP_PROJ_README_8.png)
+
+# DEMOSTRATION 2 - Cluster Harvester (with minimal possible configuration) that is automatically added to a Rancher cluster
+
+#### Create API keys from the Rancher cluster
+
+![](../../images/GCP_PROJ_README_9.png)
+![](../../images/GCP_PROJ_README_10.png)
+
+#### Configure the terraform.tfvars file by entering the Rancher API key
+
+```console
+$ cat terraform.tfvars
+prefix               = "glovecchio"
+project_id           = "<PROJECT_ID>"
+region               = "europe-west8"
+harvester_node_count = 3
+rancher_api_url      = "https://demo-rancher-gl.34.154.116.138.sslip.io/v3"
+rancher_access_key   = "token-zqpbf"
+rancher_secret_key   = "8j8vrdph57k6v7lnrwcbn9tj7c979cgfswjbk8h8md6z8nk76d5nqk"
+rancher_insecure     = true
+```
+
+#### Post-deployment checks
+
+##### Harvester UI
+
+![](../../images/GCP_PROJ_README_11.png) 
+
+##### Rancher UI
+
+![](../../images/GCP_PROJ_README_12.png)
+
+**PS: The Rancher cluster was created on an RKE2 Kubernetes cluster on Google Cloud infrastructure. To replicate the scenario, you can take a look [here](https://github.com/rancher/tf-rancher-up/tree/main/recipes/upstream/google-cloud/rke2).**
