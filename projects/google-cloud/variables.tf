@@ -186,3 +186,26 @@ variable "harvester_cluster_size" {
     error_message = "Invalid value for harvester_cluster_size. Allowed values are 'small' or 'medium'."
   }
 }
+variable "rancher_api_url" {
+  type        = string
+  default     = ""
+  description = "Rancher API endpoint to manager your Harvester cluster"
+}
+
+variable "rancher_access_key" {
+  type        = string
+  default     = ""
+  description = "Rancher access key"
+}
+
+variable "rancher_secret_key" {
+  type        = string
+  default     = ""
+  description = "Rancher secret key"
+}
+
+variable "rancher_insecure" {
+  type        = bool
+  default     = false
+  description = "Allow insecure connections to the Rancher API"
+}

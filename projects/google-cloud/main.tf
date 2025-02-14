@@ -61,6 +61,7 @@ resource "local_file" "create_cloud_config_yaml" {
     token    = var.harvester_first_node_token,
     hostname = var.prefix,
     password = var.harvester_password
+    cluster_registration_url = var.rancher_api_url != "" ? rancher2_cluster.rancher_cluster[0].cluster_registration_token[0].manifest_url : ""
   })
   file_permission = "0644"
   filename        = local.create_cloud_config_file
@@ -186,4 +187,10 @@ resource "local_file" "kube_config_yaml" {
   filename        = pathexpand(local.kubeconfig_file)
   content         = ssh_resource.retrieve_kubeconfig.result
   file_permission = "0600"
+}
+
+resource "rancher2_cluster" "rancher_cluster" {
+  name        = var.prefix
+  count       = var.rancher_api_url != "" ? 1 : 0
+  description = "${var.prefix} created by Terraform"
 }

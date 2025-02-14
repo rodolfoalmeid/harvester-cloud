@@ -22,3 +22,7 @@ install:
   tty: tty1,115200n8
   vip: 192.168.122.120
   vip_mode: static
+%{ if cluster_registration_url != "" }
+system_settings:
+  cluster-registration-url: ${cluster_registration_url}
+%{ endif }
