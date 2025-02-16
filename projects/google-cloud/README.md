@@ -104,9 +104,9 @@ prefix               = "glovecchio"
 project_id           = "<PROJECT_ID>"
 region               = "europe-west8"
 harvester_node_count = 3
-rancher_api_url      = "https://demo-rancher-gl.34.154.116.138.sslip.io/v3"
-rancher_access_key   = "token-zqpbf"
-rancher_secret_key   = "8j8vrdph57k6v7lnrwcbn9tj7c979cgfswjbk8h8md6z8nk76d5nqk"
+rancher_api_url      = "<RANCHER_URL>"        # https://rancher.example.com
+rancher_access_key   = "<RANCHER_ACCESS_KEY>" # token-abcde
+rancher_secret_key   = "<RANCHER_SECRET_KEY>" # abcdefghijklmnopqrstuvwxyz
 rancher_insecure     = true
 ```
 
