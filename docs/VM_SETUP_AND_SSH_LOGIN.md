@@ -35,9 +35,9 @@ sudo systemctl restart ssh
 #### Install Virtctl command in your CLI
 
 ```bash
-export VERSION=v0.54.0
+export VERSION=v1.2.2
 wget https://github.com/kubevirt/kubevirt/releases/download/${VERSION}/virtctl-${VERSION}-darwin-amd64
-mv virtctl-v0.54.0-darwin-amd64 virtctl
+mv virtctl-v1.2.2-darwin-amd64 virtctl
 chmod +x virtctl
 sudo mv virtctl /usr/local/bin/
 virtctl version
