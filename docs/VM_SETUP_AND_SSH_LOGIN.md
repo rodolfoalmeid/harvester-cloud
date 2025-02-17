@@ -28,6 +28,8 @@ sudo systemctl restart ssh
 ```
 ![](../images/VM_SETUP_AND_SSH_LOGIN_3.png)
 
+**Pay attention when selecting the Cloud Configuration in the VM creation form. The `#cloud-config` line may be automatically added to the file, preventing the script from working correctly.**
+
 #### Create Ubuntu Virtual Machine using ubuntu image and User-data template previously defined
 
 ![](../images/VM_SETUP_AND_SSH_LOGIN_4.png)
