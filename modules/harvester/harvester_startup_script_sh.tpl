@@ -41,7 +41,7 @@ sudo systemctl enable --now socat-proxy.service
 # Wait for the Harvester services to start
 attempts=0
 while [ "$attempts" -lt 15 ]; do
-  ip=$(curl -s http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip -H "Metadata-Flavor: Google")
+  ip=${public_ip}
   response=$(curl -k -s "https://$ip/ping")
   if [ "$response" == "pong" ]; then
     echo "Waiting for https://$ip/ping - response: $response"
