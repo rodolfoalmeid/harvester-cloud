@@ -82,7 +82,7 @@ resource "local_file" "join_cloud_config_yaml" {
 resource "local_file" "harvester_startup_script" {
   content = templatefile("${local.harvester_startup_script_template_file}", {
     hostname  = var.prefix
-    public_ip = module.harvester_node.instances_public_ip
+    public_ip = module.harvester_node.instances_public_ip[0]
     count     = var.harvester_node_count
     cpu       = local.harvester_cpu
     memory    = local.harvester_memory
