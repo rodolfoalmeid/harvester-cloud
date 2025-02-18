@@ -9,3 +9,7 @@ output "first_instance_public_ip" {
 output "harvester_url" {
   value = "https://${module.harvester_node.instances_public_ip[0]}"
 }
+
+output "longhorn_url" {
+  value = "https://${module.harvester_node.instances_public_ip[0]}/dashboard/c/local/longhorn"
+}
