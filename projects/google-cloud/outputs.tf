@@ -11,5 +11,5 @@ output "harvester_url" {
 }
 
 output "longhorn_url" {
-  value = "https://${module.harvester_node.instances_public_ip[0]}/dashboard/c/local/longhorn"
+  value = "https://${var.prefix}.${module.harvester_node.instances_public_ip[0]}.sslip.io/dashboard/c/local/longhorn"
 }
