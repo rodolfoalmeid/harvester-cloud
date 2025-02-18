@@ -1927,7 +1927,7 @@ Connecting to host iperf-server, port 5201
 iperf Done. 
 ```
 
-### 5.6_ UDP test with jitter (jitter measurement)
+### 5.7_ UDP test with jitter (jitter measurement)
 
 ```bash
 kubectl exec -it iperf-client -- iperf3 -c iperf-server -u -t 10 -J
@@ -2261,7 +2261,7 @@ $ kubectl exec -it iperf-client -- iperf3 -c iperf-server -u -t 10 -J
 }
 ```
 
-### 5.7_ Measure speed for multiple seconds (stability over time)
+### 5.8_ Measure speed for multiple seconds (stability over time)
 
 ```bash
 kubectl exec -it iperf-client -- iperf3 -c iperf-server -t 30
@@ -2312,7 +2312,7 @@ Connecting to host iperf-server, port 5201
 iperf Done.
 ```
 
-### 5.8_ Test with reporting every 1 second (reporting period)
+### 5.9_ Test with reporting every 1 second (reporting period)
 
 ```bash
 kubectl exec -it iperf-client -- iperf3 -c iperf-server -t 10 -i 1
