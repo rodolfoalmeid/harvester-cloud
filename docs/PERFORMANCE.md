@@ -2369,16 +2369,19 @@ If necessary, disk I/O can be optimized by following the suggestions below:
 1. Disk optimization on Google Cloud
   - The bigger the disk the more IOPS you get. With 350GB, you get ~10,500 IOPS per disk and ~175MB/s throughput. If you want more IOPS and throughput, increase the disks to 1TB each (1TB = 30.000 IOPS e 450MB/s di throughput).
   - Use Local SSD disks for maximum performance. Local SSD NVMe offers 680,000 IOPS and ~2.4GB/s throughput. **Local disks are NOT persistent!**
-  - Mount disks with `noatime` and `discard` to reduce overhead. `sudo mount -o discard,noatime,nodiratime,barrier=0 /dev/sdX /mnt/datadiskX`
+  - Mount disks with `noatime` and `discard` to reduce overhead.
+
+    `sudo mount -o discard,noatime,nodiratime,barrier=0 /dev/sdX /mnt/datadiskX`
   - Enable `multipath` if you have multiple disks.
 
 2. Method of attaching the disk to the Nested VM
-| Configuration            | Performance | Latency  | TRIM/Discard | When to Use? |
-|--------------------------|-------------|----------|--------------|--------------|
-| **Virtio-blk (`qcow2`)**  | :red_circle: Medium  | :yellow_circle: Medium  | :x: No  | Default, if you need snapshots |
-| **Virtio-blk (`raw`)**    | :green_circle: High    | :green_circle: Low    | :white_check_mark: Yes  | If the VM uses the disk intensively |
-| **NVMe Passthrough**      | :large_blue_circle: Maximum | :large_blue_circle: Almost zero | :white_check_mark: Yes  | If the VM has heavy workloads (DB, storage) |
-| **Virtio-SCSI (`raw`)**   | :green_circle: High    | :green_circle: Low    | :white_check_mark: Yes  | If the VM uses more than 4 disks |
+
+| Configuration            | Performance          | Latency            | TRIM/Discard   | When to Use?                                  |
+|--------------------------|----------------------|--------------------|----------------|-----------------------------------------------|
+| **Virtio-blk (`qcow2`)**  | :red_circle: Medium  | :yellow_circle: Medium  | :x: No         | Default, if you need snapshots                |
+| **Virtio-blk (`raw`)**    | :green_circle: High  | :green_circle: Low  | :white_check_mark: Yes  | If the VM uses the disk intensively            |
+| **NVMe Passthrough**      | :large_blue_circle: Maximum | :large_blue_circle: Almost zero | :white_check_mark: Yes | If the VM has heavy workloads (DB, storage)   |
+| **Virtio-SCSI (`raw`)**   | :green_circle: High  | :green_circle: Low  | :white_check_mark: Yes  | If the VM uses more than 4 disks              |
 
   - Use *NVMe Passthrough* for maximum speed if the VM handles heavy storage workloads.
   - Keep `qcow2` if you need snapshots, but expect some performance overhead.
