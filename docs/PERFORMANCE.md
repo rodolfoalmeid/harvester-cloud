@@ -2356,6 +2356,7 @@ iperf Done.
 2. Higher latency is observed compared to GCP disk tests, especially for random I/O. Understandable given the nested virtualization.
 
 Some types of applications that require high random I/O throughput and may not perform at their best are:
+
 - Databases (OLTP and NoSQL)
 - Hypervisor
 - File servers
@@ -2365,8 +2366,9 @@ Some types of applications that require high random I/O throughput and may not p
 
 Remember that the test result comes from the environment defined at the beginning of the file.
 
-If necessary, disk I/O can be optimized by following the suggestions below:
-1. Disk optimization on Google Cloud
+If necessary, disk I/O can be optimized by following the suggestions below: 
+
+a. Disk optimization on Google Cloud
   - The bigger the disk the more IOPS you get. With 350GB, you get ~10,500 IOPS per disk and ~175MB/s throughput. If you want more IOPS and throughput, increase the disks to 1TB each (1TB = 30.000 IOPS e 450MB/s di throughput).
   - Use Local SSD disks for maximum performance. Local SSD NVMe offers 680,000 IOPS and ~2.4GB/s throughput. **Local disks are NOT persistent!**
   - Mount disks with `noatime` and `discard` to reduce overhead.
@@ -2374,35 +2376,106 @@ If necessary, disk I/O can be optimized by following the suggestions below:
     `sudo mount -o discard,noatime,nodiratime,barrier=0 /dev/sdX /mnt/datadiskX`
   - Enable `multipath` if you have multiple disks.
 
-2. Method of attaching the disk to the Nested VM
-
-| Configuration            | Performance          | Latency            | TRIM/Discard   | When to Use?                                  |
-|--------------------------|----------------------|--------------------|----------------|-----------------------------------------------|
-| **Virtio-blk (`qcow2`)**  | :red_circle: Medium  | :yellow_circle: Medium  | :x: No         | Default, if you need snapshots                |
-| **Virtio-blk (`raw`)**    | :green_circle: High  | :green_circle: Low  | :white_check_mark: Yes  | If the VM uses the disk intensively            |
-| **NVMe Passthrough**      | :large_blue_circle: Maximum | :large_blue_circle: Almost zero | :white_check_mark: Yes | If the VM has heavy workloads (DB, storage)   |
-| **Virtio-SCSI (`raw`)**   | :green_circle: High  | :green_circle: Low  | :white_check_mark: Yes  | If the VM uses more than 4 disks              |
-
-  - Use *NVMe Passthrough* for maximum speed if the VM handles heavy storage workloads.
-  - Keep `qcow2` if you need snapshots, but expect some performance overhead.
-  - For more than 4 disks, use `Virtio-SCSI` instead of `virtio-blk` to improve I/O handling.
+b. Method of attaching the disk to the Nested VM
+| Feature                     | qcow2                           | raw                              |
+|-----------------------------|----------------------------------|----------------------------------|
+| **Performance**              | Slower due to overhead          | Faster (no virtualization overhead) |
+| **Space Efficiency**         | Supports thin provisioning, compresses data | Fixed size, occupies all space regardless of use |
+| **Snapshot Support**         | Yes, allows snapshots           | No native snapshot support       |
+| **Compression**              | Supports compression            | No compression                   |
+| **Encryption**               | Built-in encryption support     | No built-in encryption           |
+| **File Size**                | Dynamically grows as data is added | Fixed size, no growth after creation |
+| **Disk Features**            | Supports features like copy-on-write, discard | Simple, no advanced features     |
+| **Performance Overhead**     | Slight overhead due to advanced features | No overhead, best performance    |
+| **Compatibility**            | Common in virtualized environments | Can be used on physical hosts without conversion |
+| **Ideal Use Case**           | Environments with flexibility requirements (e.g., snapshots, compression) | High-performance use cases where storage size is not a concern |
 
 ```console
 # More performing version
-sudo virt-install \
-  --name harvester-node-$i \
-  --memory ${memory} \
-  --vcpus ${cpu} \
-  --cpu host-passthrough \
-  --disk path=/mnt/datadisk$i/harvester-data.raw,format=raw,cache=none,io=native,discard=unmap \
-  --controller type=scsi model=virtio-scsi \
-  --network bridge=virbr1,model=virtio \
-  --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) \
-  --console pty,target_type=serial \
-  --pxe --autostart &
+...
+...
+...
+for i in $(seq 1 ${count}); do
+  if [ $i == 1 ]; then
+    sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/create_cloud_config.yaml
+    sudo virt-install \
+      --name harvester-node-$i \
+      --memory ${memory} \
+      --vcpus ${cpu} \
+      --cpu host-passthrough \
+      --disk path=/mnt/datadisk$i/harvester-data.raw,size=250,format=raw,cache=none,io=native,discard=unmap,bus=virtio \
+      --controller type=scsi,model=virtio-scsi \
+      --os-type linux \
+      --os-variant generic \
+      --network bridge=virbr1,model=virtio \
+      --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) \
+      --console pty,target_type=serial \
+      --pxe \
+      --autostart &
+    sleep 30
+  elif [ $i == 2 ]; then
+    sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/join_cloud_config.yaml
+    sudo sed -i "s/create_cloud_config.yaml/join_cloud_config.yaml/g" /srv/www/harvester/default.ipxe
+    sudo virt-install \
+      --name harvester-node-$i \
+      --memory ${memory} \
+      --vcpus ${cpu} \
+      --cpu host-passthrough \
+      --disk path=/mnt/datadisk$i/harvester-data.raw,size=250,format=raw,cache=none,io=native,discard=unmap,bus=virtio \
+      --controller type=scsi,model=virtio-scsi \
+      --os-type linux \
+      --os-variant generic \
+      --network bridge=virbr1,model=virtio \
+      --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) \
+      --console pty,target_type=serial \
+      --pxe \
+      --autostart &
+    sleep 30
+  else
+    sudo cp /srv/www/harvester/join_cloud_config.yaml /srv/www/harvester/join_cloud_config_$((i - 1)).yaml
+    sudo sed -i "s/${hostname}-$((i - 1))/${hostname}-$i/g" /srv/www/harvester/join_cloud_config_$((i - 1)).yaml
+    sudo sed -i "s/join_cloud_config.yaml/join_cloud_config_$((i - 1)).yaml/g" /srv/www/harvester/default.ipxe
+    sudo virt-install \
+      --name harvester-node-$i \
+      --memory ${memory} \
+      --vcpus ${cpu} \
+      --cpu host-passthrough \
+      --disk path=/mnt/datadisk$i/harvester-data.raw,size=250,format=raw,cache=none,io=native,discard=unmap,bus=virtio \
+      --controller type=scsi,model=virtio-scsi \
+      --os-type linux \
+      --os-variant generic \
+      --network bridge=virbr1,model=virtio \
+      --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) \
+      --console pty,target_type=serial \
+      --pxe \
+      --autostart &
+    sleep 30
+  fi
+done
+...
+...
+...
 ```
 
-3. Modify the File System of the Nested VM
+Refers to the *[Harvester startup script](../modules/harvester/harvester_startup_script_sh.tpl)*.
+
+| Configuration            | Performance          | Latency            |
+|--------------------------|----------------------|--------------------|
+| **Virtio-blk (`qcow2`)**  | :red_circle: Medium  | :yellow_circle: Medium  |
+| **Virtio-blk (`raw`)**    | :green_circle: High  | :green_circle: Low  |
+
+Sequential writing tests were carried out with `raw` Virtio-blk disks and an improvement in performance was actually observed.
+
+| Metric                        | First Test   | Second Test  | Difference     |
+|-------------------------------|--------------|--------------|----------------|
+| **Bandwidth (BW)**             | 93.3 MiB/s   | 104 MiB/s    | +11.5%         |
+| **IOPS**                        | 93           | 103          | +10.8%         |
+| **Clat (average completion latency)** | 1368.08 ms   | 1232.11 ms   | **Better in the second** |
+| **99th percentile latency**    | 2836 ms      | 2601 ms      | **Better in the second** |
+| **CPU Usage (sys)**            | 8.68%        | 0.79%        | **Much more efficient in the second** |
+| **Disk Utilization (%)**       | 95.54%       | 95.45%       | Nearly identical |
+
+c. Modify the File System of the Nested VM
   - Mount disks with `noatime` and `discard` to reduce overhead. `sudo mount -o discard,noatime,nodiratime,barrier=0 /dev/sdX /mnt/datadiskX`
   - Set read-ahead for the /dev/sdX device. `sudo blockdev --setra 1024 /dev/vda` 
 
