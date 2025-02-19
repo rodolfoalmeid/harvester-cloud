@@ -4,10 +4,9 @@
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
-    - `azure_subscription` to specify in which Azure subscription the resources will be created
+    - `subscription_id` to specify in which Subscription the resources will be created
     - `region` to specify the Azure region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
-    - `harvester_cluster_size` To specify resources of Harvester hosts. (Small -> 8CPUs/32GB or medium -> 16CPUs/64GB)
 - Make sure you are logged into your Azure account from your local Terminal. See the preparatory steps [here](../../modules/azure/README.md).
 
 #### Terraform Apply
@@ -65,7 +64,7 @@ ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harves
 ```console
 $ cat terraform.tfvars
 prefix               = "jlagos"
-azure_subscription   = "<Subscription-id>"
+subscription_id      = "<SUBSCRIPTION_ID>"
 region               = "spaincentral"
 harvester_node_count = 3
 ```
@@ -101,15 +100,14 @@ harvester_node_count = 3
 
 ```console
 $ cat terraform.tfvars
-prefix                 = "jlagos"
-region                 = "spaincentral"
-harvester_node_count   = 3
-harvester_cluster_size = "small"
-azure_subscription     = "<subscription-id>"
-rancher_api_url        = "<RANCHER_URL>"        # https://rancher.example.com
-rancher_access_key     = "<RANCHER_ACCESS_KEY>" # token-abcde
-rancher_secret_key     = "<RANCHER_SECRET_KEY>" # abcdefghijklmnopqrstuvwxyz
-rancher_insecure       = true
+prefix               = "jlagos"
+subscription_id      = "<SUBSCRIPTION_ID>"
+region               = "spaincentral"
+harvester_node_count = 3
+rancher_api_url      = "<RANCHER_URL>"        # https://rancher.example.com
+rancher_access_key   = "<RANCHER_ACCESS_KEY>" # token-abcde
+rancher_secret_key   = "<RANCHER_SECRET_KEY>" # abcdefghijklmnopqrstuvwxyz
+rancher_insecure     = true
 ```
 
 #### Post-deployment checks

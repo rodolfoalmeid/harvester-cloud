@@ -4,16 +4,16 @@ variable "prefix" {
   default     = "azure-tf"
 }
 
-variable "azure_subscription" {
-  description = "Specifies the Azure subscription where objects will be created"
-  type = string
-  default = null
+variable "subscription_id" {
+  description = "Specifies the Azure Subscription ID that will contain all created resources. Default is 'azure-tf'."
+  type        = string
+  default     = "azure-tf"
 }
 
 variable "region" {
-  description = "Specifies the Azure region used for all resources. Default is 'eastus'."
+  description = "Specifies the Azure region used for all resources. Default is 'westeurope'."
   type        = string
-  default     = "eastus"
+  default     = "westeurope"
   validation {
     condition = contains([
       "australiacentral",
@@ -103,7 +103,7 @@ variable "ip_cidr_range" {
 }
 
 variable "create_vnet" {
-  description = "Specifies whether a VPC and Subnet should be created for the instances. Default is 'true'."
+  description = "Specifies whether a Virtual Network should be created for the instances. Default is 'true'."
   type        = bool
   default     = true
 }
@@ -125,7 +125,6 @@ variable "os_disk_size" {
   type        = number
   default     = 50
 }
-
 
 variable "data_disk_type" {
   description = "Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS'). Default is 'Premium_LRS'."
@@ -181,7 +180,6 @@ variable "harvester_cluster_size" {
   description = "Specifies the size of the Harvester cluster. Allowed values are 'small' (8 CPUs, 32 GB RAM) and 'medium' (16 CPUs, 64 GB RAM). Default is 'small'."
   type        = string
   default     = "small"
-
   validation {
     condition     = contains(["small", "medium"], var.harvester_cluster_size)
     error_message = "Invalid value for harvester_cluster_size. Allowed values are 'small' or 'medium'."
@@ -213,4 +211,3 @@ variable "rancher_insecure" {
   type        = bool
   default     = false
 }
-

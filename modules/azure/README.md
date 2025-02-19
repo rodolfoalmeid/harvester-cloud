@@ -1,6 +1,6 @@
-# Terraform | Azure CLI - Preparatory steps
+# Terraform | Microsoft Azure - Preparatory steps
 
-In order for Terraform to run operations on your behalf, you must [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) and login in your Azure account through AZ cli.
+In order for Terraform to run operations on your behalf, you must [install and configure the Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
 
 ## Example
 
@@ -10,13 +10,12 @@ In order for Terraform to run operations on your behalf, you must [Install Azure
 brew update && brew install azure-cli
 ```
 
-
 ```bash
 az login
 ```
 
-##### If there are more than 1 subscription, run the following to select the correct subscription where to create infrastructure
+##### If there are other active subscriptions, run
 
 ```bash
-az account set --subscription "subscription-id"
+az account set --subscription `SUBSCRIPTION_ID`
 ```

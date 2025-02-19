@@ -35,7 +35,6 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  depends_on          = [azurerm_resource_group.rg]
   count               = var.create_vnet ? 1 : 0
   name                = "${var.prefix}-vnet"
   address_space       = [var.ip_cidr_range]
@@ -44,7 +43,6 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 resource "azurerm_subnet" "subnet" {
-  depends_on           = [azurerm_virtual_network.vnet]
   count                = var.create_vnet ? 1 : 0
   name                 = "${var.prefix}-subnet"
   resource_group_name  = azurerm_resource_group.rg.name
@@ -53,7 +51,6 @@ resource "azurerm_subnet" "subnet" {
 }
 
 resource "azurerm_public_ip" "vm_ip" {
-  depends_on          = [azurerm_resource_group.rg]
   name                = "${var.prefix}-public-ip"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -61,17 +58,26 @@ resource "azurerm_public_ip" "vm_ip" {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  depends_on = [azurerm_resource_group.rg]
   name                = "${var.prefix}-nsg"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_network_security_rule" "allow_inbound" {
-  depends_on = [azurerm_network_security_group.nsg]
-  for_each                    = toset(["2379", "2381", "2380", "10010", "6443", "9345", "10252", "10257", "10251", "10259", "10250", "10256", "10258", "9091", "9099", "2112", "6444", "10246-10249", "8181", "8444", "10245", "9796", "30000-32767", "22", "3260", "5900", "6080", "8472", "68", "8443", "443"])
-  name                        = "allow-port-${each.key}"
-  priority                    = 100 + index(["2379", "2381", "2380", "10010", "6443", "9345", "10252", "10257", "10251", "10259", "10250", "10256", "10258", "9091", "9099", "2112", "6444", "10246-10249", "8181", "8444", "10245", "9796", "30000-32767", "22", "3260", "5900", "6080", "8472", "68", "8443", "443"], each.key)
+  for_each = toset([
+    "22", "68", "443", "2379", "2380", "2381", "10010", "2112", "30000-32767",
+    "3260", "5900", "6080", "6443", "6444", "8181", "8443", "8444", "8472",
+    "9091", "9099", "9345", "9796", "10245", "10246-10249", "10250", "10251",
+    "10252", "10256", "10257", "10258", "10259"
+  ])
+
+  name = "${var.prefix}-allow-inbound-${each.key}"
+  priority = 100 + index([
+    "22", "68", "443", "2379", "2380", "2381", "10010", "2112", "30000-32767",
+    "3260", "5900", "6080", "6443", "6444", "8181", "8443", "8444", "8472",
+    "9091", "9099", "9345", "9796", "10245", "10246-10249", "10250", "10251",
+    "10252", "10256", "10257", "10258", "10259"
+  ], each.key)
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "*"
@@ -84,8 +90,7 @@ resource "azurerm_network_security_rule" "allow_inbound" {
 }
 
 resource "azurerm_network_security_rule" "allow_outbound" {
-  depends_on                  = [azurerm_network_security_group.nsg]
-  name                        = "allow-outbound-internet"
+  name                        = "${var.prefix}-allow-outbound"
   priority                    = 100
   direction                   = "Outbound"
   access                      = "Allow"
@@ -99,7 +104,6 @@ resource "azurerm_network_security_rule" "allow_outbound" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  depends_on          = [azurerm_subnet.subnet]
   name                = "${var.prefix}-nic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -113,15 +117,21 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_network_interface_security_group_association" "nsg_assoc" {
-  depends_on = [azurerm_network_interface.nic]
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
+resource "random_string" "random" {
+  length  = 4
+  lower   = true
+  numeric = false
+  special = false
+  upper   = false
+}
+
 resource "azurerm_linux_virtual_machine" "vm" {
-  depends_on          = [azurerm_network_interface.nic]
   count               = local.instance_count
-  name                = "${var.prefix}-vm"
+  name                = "${var.prefix}-vm-${count.index + 1}-${random_string.random.result}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   size                = var.instance_type
@@ -129,33 +139,30 @@ resource "azurerm_linux_virtual_machine" "vm" {
   network_interface_ids = [
     azurerm_network_interface.nic.id
   ]
-  priority           = var.spot_instance ? "Spot" : "Regular"
-  eviction_policy    = var.spot_instance ? "Deallocate" : null
+  priority        = var.spot_instance ? "Spot" : "Regular"
+  eviction_policy = var.spot_instance ? "Deallocate" : null
   admin_ssh_key {
     username   = local.ssh_username
     public_key = tls_private_key.ssh_private_key[0].public_key_openssh
   }
-
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = var.os_disk_type
     disk_size_gb         = var.os_disk_size
   }
-
   source_image_reference {
     publisher = local.os_image_publisher
     offer     = local.os_image_offer
     sku       = local.os_image_sku
     version   = local.os_image_version
   }
-
   custom_data = var.startup_script != null ? base64encode(var.startup_script) : null
 }
 
 resource "azurerm_managed_disk" "data_disk" {
   depends_on           = [azurerm_linux_virtual_machine.vm]
   count                = var.data_disk_count
-  name                 = "${var.prefix}-datadisk-${count.index}"
+  name                 = "${var.prefix}-data-disk-${count.index + 1}-${random_string.random.result}"
   location             = azurerm_resource_group.rg.location
   resource_group_name  = azurerm_resource_group.rg.name
   storage_account_type = var.data_disk_type
@@ -164,10 +171,9 @@ resource "azurerm_managed_disk" "data_disk" {
 }
 
 resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attachment" {
-  depends_on         = [azurerm_managed_disk.data_disk]
   count              = var.data_disk_count
   managed_disk_id    = azurerm_managed_disk.data_disk[count.index].id
   virtual_machine_id = azurerm_linux_virtual_machine.vm[0].id
   lun                = count.index
-  caching           = "ReadWrite"
+  caching            = "ReadWrite"
 }

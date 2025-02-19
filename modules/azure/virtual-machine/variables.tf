@@ -5,38 +5,68 @@ variable "prefix" {
 }
 
 variable "region" {
-  description = "Specifies the Azure region used for all resources. Default is 'eastus'."
+  description = "Specifies the Azure region used for all resources. Default is 'westeurope'."
   type        = string
-  default     = "spaincentral"
+  default     = "westeurope"
   validation {
     condition = contains([
+      "australiacentral",
+      "australiacentral2",
+      "australiaeast",
+      "australiasoutheast",
+      "austriaeast",
+      "brazilsouth",
+      "brazilsoutheast",
+      "canadacentral",
+      "canadaeast",
+      "centralindia",
+      "centralus",
+      "centraluseuap",
+      "chilecentral",
+      "eastasia",
       "eastus",
       "eastus2",
-      "centralus",
-      "northcentralus",
-      "southcentralus",
-      "westus",
-      "westus2",
-      "northeurope",
-      "westeurope",
-      "spaincentral",
+      "eastus2euap",
       "francecentral",
-      "germanycentral",
-      "centralindia",
-      "southindia",
-      "westindia",
+      "francesouth",
+      "germanynorth",
+      "germanywestcentral",
+      "indonesiacentral",
       "israelcentral",
+      "italynorth",
       "japaneast",
+      "japanwest",
+      "jioindiacentral",
+      "jioindiawest",
       "koreacentral",
       "koreasouth",
+      "malaysiasouth",
+      "malaysiawest",
+      "mexicocentral",
+      "northcentralus",
+      "northeurope",
       "norwayeast",
       "norwaywest",
-      "singapore",
+      "polandcentral",
+      "southafricanorth",
+      "southafricawest",
+      "southcentralus",
+      "southcentralusstg",
+      "southeastasia",
+      "southindia",
+      "spaincentral",
       "swedencentral",
       "switzerlandnorth",
-      "uaecentral",
+      "switzerlandwest",
+      "taiwannorth",
+      "uaenorth",
+      "uksouth",
       "ukwest",
-      "uksouth"
+      "westcentralus",
+      "westeurope",
+      "westus",
+      "westus2",
+      "westus3"
     ], var.region)
     error_message = "Invalid Region specified."
   }
@@ -67,7 +97,7 @@ variable "ip_cidr_range" {
 }
 
 variable "create_vnet" {
-  description = "Specifies whether a VPC and Subnet should be created for the instances. Default is 'true'."
+  description = "Specifies whether a Virtual Network should be created for the instances. Default is 'true'."
   type        = bool
   default     = true
 }
@@ -75,7 +105,7 @@ variable "create_vnet" {
 variable "spot_instance" {
   description = "Specifies whether the instances should be Spot (preemptible) VMs. Default is 'true'."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "os_disk_type" {
@@ -91,7 +121,7 @@ variable "os_disk_size" {
 }
 
 variable "instance_type" {
-  description = "Specifies the name of a Azure Virtual Machine size. Default is 'Standard_D16as_v5'."
+  description = "Specifies the name of an Azure Virtual Machine type. Default is 'Standard_D16as_v5'."
   type        = string
   default     = "Standard_D16as_v5"
 }

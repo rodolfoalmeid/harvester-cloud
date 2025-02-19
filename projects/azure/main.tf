@@ -181,7 +181,7 @@ resource "local_file" "kube_config_yaml" {
   file_permission = "0600"
 }
 
- resource "rancher2_cluster" "rancher_cluster" {
-   name  = var.prefix
-   count = var.rancher_api_url != "" ? 1 : 0
- }
+resource "rancher2_cluster" "rancher_cluster" {
+  name  = var.prefix
+  count = var.rancher_api_url != "" ? 1 : 0
+}
