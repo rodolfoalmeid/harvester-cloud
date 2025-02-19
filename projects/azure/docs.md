@@ -12,8 +12,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | n/a |
-| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.2 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.2.3 |
 | <a name="provider_rancher2"></a> [rancher2](#provider\_rancher2) | 5.1.0 |
 | <a name="provider_ssh"></a> [ssh](#provider\_ssh) | 2.6.0 |
 
@@ -57,7 +57,6 @@
 | <a name="input_harvester_node_count"></a> [harvester\_node\_count](#input\_harvester\_node\_count) | Specifies the number of Harvester nodes to create (1 or 3). Default is '1'. | `number` | `1` | no |
 | <a name="input_harvester_password"></a> [harvester\_password](#input\_harvester\_password) | Specifies the password used to access the Harvester nodes. Default is 'SecretPassword.123'. | `string` | `"SecretPassword.123"` | no |
 | <a name="input_harvester_version"></a> [harvester\_version](#input\_harvester\_version) | Specifies the Harvester version. Default is 'v1.4.1'. | `string` | `"v1.4.1"` | no |
-| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Specifies the name of a Azure Virtual Machine size. Default is 'Standard\_D16as\_v5'. | `string` | `"Standard_D16as_v5"` | no |
 | <a name="input_ip_cidr_range"></a> [ip\_cidr\_range](#input\_ip\_cidr\_range) | Specifies the range of private IPs available for the Google Subnet. Default is '10.10.0.0/24'. | `string` | `"10.10.0.0/24"` | no |
 | <a name="input_os_disk_size"></a> [os\_disk\_size](#input\_os\_disk\_size) | Specifies the size of the disk attached to each node, in GB. Default is '50'. | `number` | `50` | no |
 | <a name="input_os_disk_type"></a> [os\_disk\_type](#input\_os\_disk\_type) | Specifies the type of the disk attached to each node (e.g., 'Premium\_LRS', 'Standard\_LRS'). Default is 'Premium\_LRS'. | `string` | `"Premium_LRS"` | no |
@@ -79,3 +78,4 @@
 | <a name="output_first_instance_private_ip"></a> [first\_instance\_private\_ip](#output\_first\_instance\_private\_ip) | n/a |
 | <a name="output_first_instance_public_ip"></a> [first\_instance\_public\_ip](#output\_first\_instance\_public\_ip) | n/a |
 | <a name="output_harvester_url"></a> [harvester\_url](#output\_harvester\_url) | n/a |
+| <a name="output_longhorn_url"></a> [longhorn\_url](#output\_longhorn\_url) | n/a |

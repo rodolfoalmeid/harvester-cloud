@@ -4,39 +4,75 @@ variable "prefix" {
   default     = "azure-tf"
 }
 
+variable "azure_subscription" {
+  description = "Specifies the Azure subscription where objects will be created"
+  type = string
+  default = null
+}
+
 variable "region" {
   description = "Specifies the Azure region used for all resources. Default is 'eastus'."
   type        = string
   default     = "eastus"
   validation {
     condition = contains([
+      "australiacentral",
+      "australiacentral2",
+      "australiaeast",
+      "australiasoutheast",
+      "austriaeast",
+      "brazilsouth",
+      "brazilsoutheast",
+      "canadacentral",
+      "canadaeast",
+      "centralindia",
+      "centralus",
+      "centraluseuap",
+      "chilecentral",
+      "eastasia",
       "eastus",
       "eastus2",
-      "centralus",
-      "northcentralus",
-      "southcentralus",
-      "westus",
-      "westus2",
-      "northeurope",
-      "westeurope",
-      "spaincentral",
+      "eastus2euap",
       "francecentral",
-      "germanycentral",
-      "centralindia",
-      "southindia",
-      "westindia",
+      "francesouth",
+      "germanynorth",
+      "germanywestcentral",
+      "indonesiacentral",
       "israelcentral",
+      "italynorth",
       "japaneast",
+      "japanwest",
+      "jioindiacentral",
+      "jioindiawest",
       "koreacentral",
       "koreasouth",
+      "malaysiasouth",
+      "malaysiawest",
+      "mexicocentral",
+      "northcentralus",
+      "northeurope",
       "norwayeast",
       "norwaywest",
-      "singapore",
+      "polandcentral",
+      "southafricanorth",
+      "southafricawest",
+      "southcentralus",
+      "southcentralusstg",
+      "southeastasia",
+      "southindia",
+      "spaincentral",
       "swedencentral",
       "switzerlandnorth",
-      "uaecentral",
+      "switzerlandwest",
+      "taiwannorth",
+      "uaenorth",
+      "uksouth",
       "ukwest",
-      "uksouth"
+      "westcentralus",
+      "westeurope",
+      "westus",
+      "westus2",
+      "westus3"
     ], var.region)
     error_message = "Invalid Region specified."
   }
@@ -194,8 +230,3 @@ variable "rancher_insecure" {
   default     = false
 }
 
-variable "azure_subscription" {
-  description = "Specifies the Azure subscription where objects will be created"
-  type = string
-  default = null
-}

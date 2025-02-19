@@ -1,3 +1,14 @@
+# How to create resources
+
+- Copy `./terraform.tfvars.exmaple` to `./terraform.tfvars`
+- Edit `./terraform.tfvars`
+  - Update the required variables:
+    - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
+    - `azure_subscription` to specify in which Azure subscription the resources will be created
+    - `region` to specify the Google region where resources will be created
+    - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
+    - `harvester_cluster_size` To specify resources of Harvester hosts. (Small -> 8CPU/32GiB or medium -> 16CPU/64GiB)
+- Make sure you are logged into your Azure account from your local Terminal. See the preparatory steps [here](../../modules/azure/README.md).
 
 #### Terraform Apply
 
@@ -54,8 +65,8 @@ ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harves
 ```console
 $ cat terraform.tfvars
 prefix               = "jlagos"
-project_id           = "<PROJECT_ID>"
-region               = "europe-west8"
+azure_subscription   = "<Subscription-id>"
+region               = "spaincentral"
 harvester_node_count = 3
 ```
 
@@ -90,14 +101,15 @@ harvester_node_count = 3
 
 ```console
 $ cat terraform.tfvars
-prefix               = "glovecchio"
-project_id           = "<PROJECT_ID>"
-region               = "europe-west8"
-harvester_node_count = 3
-rancher_api_url      = "<RANCHER_URL>"        # https://rancher.example.com
-rancher_access_key   = "<RANCHER_ACCESS_KEY>" # token-abcde
-rancher_secret_key   = "<RANCHER_SECRET_KEY>" # abcdefghijklmnopqrstuvwxyz
-rancher_insecure     = true
+prefix                 = "jlagos"
+region                 = "spaincentral"
+harvester_node_count   = 3
+harvester_cluster_size = "small"
+azure_subscription     = "<subscription-id>"
+rancher_api_url        = "<RANCHER_URL>"        # https://rancher.example.com
+rancher_access_key     = "<RANCHER_ACCESS_KEY>" # token-abcde
+rancher_secret_key     = "<RANCHER_SECRET_KEY>" # abcdefghijklmnopqrstuvwxyz
+rancher_insecure       = true
 ```
 
 #### Post-deployment checks
