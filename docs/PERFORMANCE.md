@@ -2466,8 +2466,8 @@ Refers to the *[Harvester startup script](../modules/harvester/harvester_startup
 
 Sequential writing tests were carried out with `raw` Virtio-blk disks and an improvement in performance was actually observed.
 
-| Metric                        | First Test   | Second Test  | Difference     |
-|-------------------------------|--------------|--------------|----------------|
+| Metric                        | First Test (`qcow2`)   | Second Test (`raw`)  | Difference     |
+|-------------------------------|------------------------|----------------------|----------------|
 | **Bandwidth (BW)**             | 93.3 MiB/s   | 104 MiB/s    | +11.5%         |
 | **IOPS**                        | 93           | 103          | +10.8%         |
 | **Clat (average completion latency)** | 1368.08 ms   | 1232.11 ms   | **Better in the second** |
