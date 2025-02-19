@@ -1,6 +1,6 @@
 # Terraform | Azure CLI - Preparatory steps
 
-In order for Terraform to run operations on your behalf, you must [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli).
+In order for Terraform to run operations on your behalf, you must [Install Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) and login in your Azure account through AZ cli.
 
 ## Example
 

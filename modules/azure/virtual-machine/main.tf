@@ -154,7 +154,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
 resource "azurerm_managed_disk" "data_disk" {
   depends_on           = [azurerm_linux_virtual_machine.vm]
-  count                = var.create_data_disk ? var.data_disk_count : 0
+  count                = var.data_disk_count
   name                 = "${var.prefix}-datadisk-${count.index}"
   location             = azurerm_resource_group.rg.location
   resource_group_name  = azurerm_resource_group.rg.name
@@ -165,7 +165,7 @@ resource "azurerm_managed_disk" "data_disk" {
 
 resource "azurerm_virtual_machine_data_disk_attachment" "data_disk_attachment" {
   depends_on         = [azurerm_managed_disk.data_disk]
-  count              = var.create_data_disk ? var.data_disk_count : 0
+  count              = var.data_disk_count
   managed_disk_id    = azurerm_managed_disk.data_disk[count.index].id
   virtual_machine_id = azurerm_linux_virtual_machine.vm[0].id
   lun                = count.index

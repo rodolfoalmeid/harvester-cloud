@@ -106,7 +106,6 @@ module "harvester_node" {
   data_disk_count      = var.harvester_node_count
   data_disk_type       = var.data_disk_type
   data_disk_size       = var.data_disk_size
-  create_data_disk     = var.create_data_disk
   startup_script       = data.local_file.sles_startup_script.content
 }
 

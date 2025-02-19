@@ -97,7 +97,7 @@ variable "ssh_public_key_path" {
 }
 
 variable "ip_cidr_range" {
-  description = "Specifies the range of private IPs available for the Google Subnet. Default is '10.10.0.0/24'."
+  description = "Specifies the range of private IPs available for the Azure Subnet. Default is '10.10.0.0/24'."
   type        = string
   default     = "10.10.0.0/24"
 }
@@ -126,22 +126,6 @@ variable "os_disk_size" {
   default     = 50
 }
 
-
-variable "create_data_disk" {
-  description = "Specifies whether to create an additional data disk for each VM instance. Default is 'true'."
-  type        = bool
-  default     = true
-}
-
-variable "data_disk_count" {
-  description = "Specifies the number of data disks to create (1 or 3). Default is '1'."
-  type        = number
-  default     = 1
-  validation {
-    condition     = contains([1, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1 or 3."
-  }
-}
 
 variable "data_disk_type" {
   description = "Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS'). Default is 'Premium_LRS'."

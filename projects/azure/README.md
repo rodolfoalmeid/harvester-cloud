@@ -5,9 +5,9 @@
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
     - `azure_subscription` to specify in which Azure subscription the resources will be created
-    - `region` to specify the Google region where resources will be created
+    - `region` to specify the Azure region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
-    - `harvester_cluster_size` To specify resources of Harvester hosts. (Small -> 8CPU/32GiB or medium -> 16CPU/64GiB)
+    - `harvester_cluster_size` To specify resources of Harvester hosts. (Small -> 8CPUs/32GB or medium -> 16CPUs/64GB)
 - Make sure you are logged into your Azure account from your local Terminal. See the preparatory steps [here](../../modules/azure/README.md).
 
 #### Terraform Apply
@@ -42,7 +42,7 @@ tofu destroy -auto-approve
 export KUBECONFIG=<PREFIX>_kube_config.yaml
 ```
 
-## How to access Google VMs
+## How to access Azure VMs
 
 #### Run the following command
 
@@ -52,7 +52,7 @@ ssh -oStrictHostKeyChecking=no -i <PREFIX>-ssh_private_key.pem sles@<PUBLIC_IPV4
 
 ## How to access Harvester Nested VMs
 
-#### Run the following command within Google VM where harvester is running
+#### Run the following command within Azure VM where harvester is running
 
 ```bash
 ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harvester_password or from join/create_cloud_config.yaml file in the current folder
@@ -78,7 +78,7 @@ harvester_node_count = 3
 ![](../../images/GCP_PROJ_README_4.png)
 ![](../../images/GCP_PROJ_README_5.png)
 
-#### How to log in via SSH into the Google Cloud VM
+#### How to log in via SSH into the Azure Cloud VM
 
 ![](../../images/GCP_PROJ_README_6.png)
 

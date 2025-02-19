@@ -96,12 +96,6 @@ variable "instance_type" {
   default     = "Standard_D16as_v5"
 }
 
-variable "create_data_disk" {
-  description = "Specifies whether to create an additional data disk for each VM instance. Default is 'true'."
-  type        = bool
-  default     = true
-}
-
 variable "data_disk_count" {
   description = "Specifies the number of data disks to create (1 or 3). Default is '1'."
   type        = number
