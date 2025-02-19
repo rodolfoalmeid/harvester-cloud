@@ -4,12 +4,6 @@ variable "prefix" {
   default     = "gcp-tf"
 }
 
-variable "project_id" {
-  description = "Specifies the Google Project ID that will contain all created resources. Default is 'gcp-tf'."
-  type        = string
-  default     = "gcp-tf"
-}
-
 variable "region" {
   description = "Specifies the Google region used for all resources. Default is 'us-west2'."
   type        = string
@@ -130,12 +124,6 @@ variable "instance_type" {
   description = "Specifies the name of a Google Compute Engine machine type. Default is 'n2-standard-16'."
   type        = string
   default     = "n2-standard-16"
-}
-
-variable "create_data_disk" {
-  description = "Specifies whether to create an additional data disk for each VM instance. Default is 'true'."
-  type        = bool
-  default     = true
 }
 
 variable "data_disk_count" {

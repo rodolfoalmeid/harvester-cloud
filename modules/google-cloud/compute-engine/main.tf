@@ -89,7 +89,7 @@ resource "random_shuffle" "random_zone" {
 }
 
 resource "google_compute_disk" "data_disk" {
-  count = var.create_data_disk ? var.data_disk_count : 0
+  count = var.data_disk_count
   name  = "${var.prefix}-data-disk-${count.index + 1}-${random_string.random.result}"
   type  = var.data_disk_type
   size  = var.data_disk_size
@@ -121,7 +121,7 @@ resource "google_compute_instance" "default" {
     }
   }
   dynamic "attached_disk" {
-    for_each = var.create_data_disk ? google_compute_disk.data_disk : []
+    for_each = google_compute_disk.data_disk
     content {
       source = attached_disk.value.self_link
     }

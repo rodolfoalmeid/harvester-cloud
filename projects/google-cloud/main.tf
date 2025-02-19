@@ -97,7 +97,6 @@ module "harvester_node" {
   depends_on           = [local_file.sles_startup_script_config]
   source               = "../../modules/google-cloud/compute-engine"
   prefix               = var.prefix
-  project_id           = var.project_id
   region               = var.region
   create_ssh_key_pair  = var.create_ssh_key_pair
   ssh_private_key_path = local.ssh_private_key_path
