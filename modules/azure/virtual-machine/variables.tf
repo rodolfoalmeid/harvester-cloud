@@ -61,7 +61,7 @@ variable "ssh_public_key_path" {
 }
 
 variable "ip_cidr_range" {
-  description = "Specifies the range of private IPs available for the Google Subnet. Default is '10.10.0.0/24'."
+  description = "Specifies the range of private IPs available for the Azure Subnet. Default is '10.10.0.0/24'."
   type        = string
   default     = "10.10.0.0/24"
 }
