@@ -41,6 +41,7 @@ jobs:
       - name: Run Terraform Plan
         run: terraform plan
         working-directory: projects/google-cloud/
+
   azure_terraform_plan:
     runs-on: ubuntu-24.04
     steps:
