@@ -8,7 +8,8 @@
     - `region` to specify the Azure region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
 - Make sure you are logged into your Azure account from your local Terminal. See the preparatory steps [here](../../modules/azure/README.md).
-- Make sure you have enough resources available in the quotas attached to the region defined [here](https://learn.microsoft.com/en-us/azure/quotas/quotas-overview#adjustable-and-non-adjustable-quotas)
+- Make sure the quotas assigned to the region you use are high enough to allow you to deploy. Take a look [here](https://learn.microsoft.com/en-us/azure/quotas/quotas-overview#adjustable-and-non-adjustable-quotas).
+
 #### Terraform Apply
 
 ```bash
