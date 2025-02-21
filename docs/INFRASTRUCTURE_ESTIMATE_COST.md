@@ -1,4 +1,4 @@
-# GCP cost analysis
+# Google Cloud cost analysis
 
 The following information provides an infrastructure cost estimation for deploying Harvester on GCP using all available options in the Terraform script.
 
@@ -17,7 +17,7 @@ Please note that all estimated costs shown are generic approximations that have 
 
 The calculations were done using the *[Google Cloud pricing calculator](https://cloud.google.com/calculator)*.
 
-# Azure cost analysis
+# Microsoft Azure cost analysis
 
 The following information provides an infrastructure cost estimation for deploying Harvester on Azure using all available options in the Terraform script.
 
