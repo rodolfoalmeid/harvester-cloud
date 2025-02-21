@@ -38,6 +38,7 @@ Please note that all estimated costs shown are generic estimates only which are 
 ## Azure Cost Analysis
 
 The following information shows the infrastructure cost estimation to deploy Harvester on Azure using all options available in the terraform script.
+
 Please note that all estimated costs shown are generic estimates only which are not 100% accurate as the total price will be different for each scenario and Subscription account.
 
 ### Cost Table
