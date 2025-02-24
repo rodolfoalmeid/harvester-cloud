@@ -22,6 +22,12 @@ variable "image_namespace" {
   default     = "default"
 }
 
+variable "image_source_type" {
+  description = "Specifies the source type for the Harvester image. Default is 'download'."
+  type        = string
+  default     = "download"
+}
+
 variable "image_url" {
   description = "Specifies the URL used to download the Harvester image. Default is 'https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img'."
   type        = string

@@ -1,9 +1,3 @@
-variable "prefix" {
-  description = "Specifies the prefix added to the names of all resources. Default is 'harvester-tf'."
-  type        = string
-  default     = "harvester-tf"
-}
-
 variable "create_image" {
   description = "Specifies whether a Harvester VM image should be created. Default is 'true'."
   type        = bool
@@ -20,6 +14,12 @@ variable "image_namespace" {
   description = "Specifies the namespace in which the Harvester image will be created. Default is 'default'."
   type        = string
   default     = "default"
+}
+
+variable "image_source_type" {
+  description = "Specifies the source type for the Harvester image. Default is 'download'."
+  type        = string
+  default     = "download"
 }
 
 variable "image_url" {
