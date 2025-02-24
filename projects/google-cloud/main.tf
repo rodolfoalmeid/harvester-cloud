@@ -1,16 +1,16 @@
 locals {
-  sles_startup_script_template_file      = "../../modules/harvester/sles_startup_script_sh.tpl"
+  sles_startup_script_template_file      = "../../modules/harvester/deployment-script/sles_startup_script_sh.tpl"
   sles_startup_script_file               = "${path.cwd}/sles_startup_script.sh"
   data_disk_name                         = "/dev/sd"
   data_disk_mount_point                  = "/mnt/datadisk"
-  default_ipxe_script_template_file      = "../../modules/harvester/default_ipxe.tpl"
+  default_ipxe_script_template_file      = "../../modules/harvester/deployment-script/default_ipxe.tpl"
   default_ipxe_script_file               = "${path.cwd}/default.ipxe"
   ipxe_base_url                          = "http://192.168.122.1"
-  create_cloud_config_template_file      = "../../modules/harvester/create_cloud_config_yaml.tpl"
+  create_cloud_config_template_file      = "../../modules/harvester/deployment-script/create_cloud_config_yaml.tpl"
   create_cloud_config_file               = "${path.cwd}/create_cloud_config.yaml"
-  join_cloud_config_template_file        = "../../modules/harvester/join_cloud_config_yaml.tpl"
+  join_cloud_config_template_file        = "../../modules/harvester/deployment-script/join_cloud_config_yaml.tpl"
   join_cloud_config_file                 = "${path.cwd}/join_cloud_config.yaml"
-  harvester_startup_script_template_file = "../../modules/harvester/harvester_startup_script_sh.tpl"
+  harvester_startup_script_template_file = "../../modules/harvester/deployment-script/harvester_startup_script_sh.tpl"
   harvester_startup_script_file          = "${path.cwd}/harvester_startup_script.sh"
   harvester_cpu                          = var.harvester_cluster_size == "small" ? 8 : 16
   harvester_memory                       = var.harvester_cluster_size == "small" ? 32768 : 65536
