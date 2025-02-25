@@ -1,0 +1,17 @@
+## -- Specifies the name of the Harvester VM network.
+network_name = "vlan2"
+
+## -- Specifies the URL of the Harvester cluster API.
+harvester_url = ""
+
+## -- Specifies the full path where the Kubeconfig file is located.
+kubeconfig_file_path = ""
+
+## -- Specifies the name of the Kubeconfig file used to access the Harvester cluster.
+kubeconfig_file_name = ""
+
+## -- Specifies the full path where the private SSH key file is located.
+private_ssh_key_file_path = ""
+
+## -- Specifies the name of the private SSH key file used for authentication.
+private_ssh_key_file_name = ""

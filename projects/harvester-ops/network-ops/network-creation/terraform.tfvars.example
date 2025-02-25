@@ -1,0 +1,41 @@
+## -- Specifies the name of the Harvester Cluster Network.
+cluster_network_name = "cluster-vlan"
+
+## -- Specifies the name of the VLAN configuration for the Harvester Cluster Network.
+cluster_network_vlanconfig_name = "cluster-vlan-all-nodes"
+
+## -- Specifies the list of NICs used for the Harvester Cluster Network VLAN.
+cluster_network_vlan_nic = "virbr2"
+
+## -- Specifies the bond mode for the Harvester Cluster Network VLAN.
+cluster_network_vlan_bond_mode = "active-backup"
+
+## -- Specifies the name of the Harvester VM network.
+network_name = "vlan2"
+
+## -- Specifies the namespace where the Harvester VM network is created.
+network_namespace = "default"
+
+## -- Specifies the VLAN ID for the Harvester VM network.
+network_vlan_id = 1
+
+## -- Specifies the routing mode for the Harvester VM network.
+network_route_mode = "auto"
+
+## -- Specifies the DHCP server IP address for the network route.
+network_route_dhcp_server_ip = ""
+
+## -- Specifies the URL of the Harvester cluster API.
+harvester_url = ""
+
+## -- Specifies the full path where the Kubeconfig file is located.
+kubeconfig_file_path = ""
+
+## -- Specifies the name of the Kubeconfig file used to access the Harvester cluster.
+kubeconfig_file_name = ""
+
+## -- Specifies the full path where the private SSH key file is located.
+private_ssh_key_file_path = ""
+
+## -- Specifies the name of the private SSH key file used for authentication.
+private_ssh_key_file_name = ""
