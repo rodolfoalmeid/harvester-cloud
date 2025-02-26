@@ -17,7 +17,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_harvester_network"></a> [harvester\_network](#module\_harvester\_network) | ../../../../modules/harvester/network | n/a |
+| <a name="module_harvester_network"></a> [harvester\_network](#module\_harvester\_network) | ../../../modules/harvester/network | n/a |
 
 ## Resources
 
@@ -28,6 +28,7 @@
 | [null_resource.wait_harvester_services_startup](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [ssh_resource.attach_network_interface](https://registry.terraform.io/providers/loafoe/ssh/2.6.0/docs/resources/resource) | resource |
 | [ssh_resource.create_vlanx](https://registry.terraform.io/providers/loafoe/ssh/2.6.0/docs/resources/resource) | resource |
+| [local_file.load_kubeconfig_file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 

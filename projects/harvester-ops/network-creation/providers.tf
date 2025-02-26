@@ -10,7 +10,3 @@ terraform {
     }
   }
 }
-
-provider "harvester" {
-  kubeconfig = "${var.kubeconfig_file_path}/${var.kubeconfig_file_name}"
-}

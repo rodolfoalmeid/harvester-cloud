@@ -1,10 +1,11 @@
 locals {
   harvester_public_ip              = replace(replace(var.harvester_url, "https://", ""), "/$", "")
-  qemu_vlanx_xml_template_file     = "../../../../modules/harvester/deployment-script/qemu_vlanx_xml.tpl"
+  qemu_vlanx_xml_template_file     = "../../../modules/harvester/deployment-script/qemu_vlanx_xml.tpl"
   qemu_vlanx_xml_file              = "${path.cwd}/vlanx.xml"
   vlanx_ip_base                    = "192.168.123" # address=192.168.123.1 netmask=255.255.255.0 start=192.168.123.2 end=192.168.123.254
   harvester_network_interface_name = ["ens7"]      # Name of the NIC that is automatically created in Harvester nested VMs
   ssh_username                     = "sles"
+  kubeconfig_file                  = "${var.kubeconfig_file_path}/${var.kubeconfig_file_name}"
 }
 
 resource "local_file" "qemu_vlanx_config" {
@@ -37,9 +38,9 @@ resource "ssh_resource" "create_vlanx" {
   user        = local.ssh_username
   private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   commands = [
-    "sudo virsh net-define /tmp/${basename(local.qemu_vlanx_xml_file)}",
-    "sudo virsh net-start ${var.network_name}",
-    "sudo virsh net-autostart ${var.network_name}"
+    "sudo virsh net-define /tmp/${basename(local.qemu_vlanx_xml_file)} || true",
+    "sudo virsh net-start ${var.network_name} || true",
+    "sudo virsh net-autostart ${var.network_name} || true"
   ]
 }
 
@@ -52,7 +53,7 @@ resource "ssh_resource" "attach_network_interface" {
     <<-EOT
       NODE_COUNT=$(sudo virsh list --all | grep -c "running")
       for i in $(seq 1 $NODE_COUNT); do
-        sudo virsh attach-interface --domain harvester-node-$i --type bridge --source ${join(",", var.cluster_network_vlan_nics)} --model virtio --config --live
+        sudo virsh attach-interface --domain harvester-node-$i --type bridge --source ${join(",", var.cluster_network_vlan_nics)} --model virtio --config --live || true
       done
       for i in $(seq 1 $NODE_COUNT); do
         sudo virsh reboot harvester-node-$i
@@ -82,9 +83,18 @@ resource "null_resource" "wait_harvester_services_startup" {
   }
 }
 
+data "local_file" "load_kubeconfig_file" {
+  depends_on = [null_resource.wait_harvester_services_startup]
+  filename   = local.kubeconfig_file
+}
+
+provider "harvester" {
+  kubeconfig = data.local_file.load_kubeconfig_file.filename
+}
+
 module "harvester_network" {
   depends_on                      = [ssh_resource.attach_network_interface]
-  source                          = "../../../../modules/harvester/network"
+  source                          = "../../../modules/harvester/network"
   cluster_network_name            = var.cluster_network_name
   cluster_network_vlanconfig_name = var.cluster_network_vlanconfig_name
   cluster_network_vlan_nics       = local.harvester_network_interface_name
