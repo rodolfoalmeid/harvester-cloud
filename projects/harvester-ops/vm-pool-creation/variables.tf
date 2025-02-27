@@ -40,6 +40,12 @@ variable "memory" {
   default     = 4
 }
 
+variable "network_name" {
+  description = "Specifies the name of the Harvester VM network that was created. Default is an empty string ('')." # management network by default
+  type        = string
+  default     = ""
+}
+
 variable "image_namespace" {
   description = "Specifies the namespace in which the Harvester image was created. Default is 'default'."
   type        = string

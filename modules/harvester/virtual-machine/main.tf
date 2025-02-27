@@ -24,6 +24,7 @@ resource "harvester_virtualmachine" "default" {
   machine_type    = "q35"
   network_interface {
     name           = "nic-1"
+    network_name   = var.network_name
     type           = "bridge" #https://groups.google.com/g/kubevirt-dev/c/HyMWzPQGBoM
     wait_for_lease = true
   }

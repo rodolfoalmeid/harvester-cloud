@@ -29,6 +29,7 @@ No modules.
 | <a name="input_image_name"></a> [image\_name](#input\_image\_name) | Specifies the OS image name. Default is 'ubuntu22'. | `string` | `"ubuntu22"` | no |
 | <a name="input_image_namespace"></a> [image\_namespace](#input\_image\_namespace) | Specifies the namespace in which the Harvester image was created. Default is 'default'. | `string` | `"default"` | no |
 | <a name="input_memory"></a> [memory](#input\_memory) | Specifies the amount of memory allocated to each VM, in GB. Default is '4'. | `number` | `4` | no |
+| <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Specifies the name of the Harvester VM network that was created. Default is an empty string (''). | `string` | `""` | no |
 | <a name="input_os_disk_size"></a> [os\_disk\_size](#input\_os\_disk\_size) | Specifies the size of the root disk attached to each VM, in GB. Default is '25'. | `number` | `25` | no |
 | <a name="input_ssh_password"></a> [ssh\_password](#input\_ssh\_password) | Specifies the password used for SSH login. Default is 'null'. | `string` | `null` | no |
 | <a name="input_ssh_username"></a> [ssh\_username](#input\_ssh\_username) | Specifies the username used for SSH login. Default is 'ubuntu'. | `string` | `"ubuntu"` | no |

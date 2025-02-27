@@ -19,6 +19,9 @@ cpu = 2
 ## -- Specifies the amount of memory allocated to each VM, in GB.
 memory = 4
 
+## -- Specifies the name of the Harvester VM network that was created.
+network_name = ""
+
 ## -- Specifies the namespace in which the Harvester image was created.
 image_namespace = "default"
 
