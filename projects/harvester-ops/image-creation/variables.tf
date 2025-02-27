@@ -1,9 +1,3 @@
-variable "prefix" {
-  description = "Specifies the prefix added to the names of all resources. Default is 'harvester-tf'."
-  type        = string
-  default     = "harvester-tf"
-}
-
 variable "create_image" {
   description = "Specifies whether a Harvester VM image should be created. Default is 'true'."
   type        = bool
