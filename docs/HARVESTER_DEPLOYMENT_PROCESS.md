@@ -31,13 +31,17 @@ The reason for this is that each data disk is associated with a nested VM, as if
 
 ##### Harvester HA
 
+```console
      |→ Data Disk 1 → Harvester Node 1
 VM --|→ Data Disk 2 → Harvester Node 2
      |→ Data Disk 3 → Harvester Node 3
+```
 
 ##### Harvester Single-Node
 
+```console
 VM --|→ Data Disk 1 → Harvester Node 1
+```
 
 ### 2_ VM Setup
 
@@ -389,4 +393,4 @@ sudo sed -i "/certificate-authority-data:/c\\    insecure-skip-tls-verify: true"
 
 The last part allows the integration of the Harvester cluster with a pre-existing Rancher cluster.
 
-Take a look [here](https://github.com/rancher/harvester-cloud/blob/feature/issue-4/projects/google-cloud/README.md#demostration-2---cluster-harvester-with-minimal-possible-configuration-that-is-automatically-added-to-a-rancher-cluster) for the demonstration.
+Take a look [here](https://github.com/rancher/harvester-cloud/blob/main/projects/google-cloud/README.md#demostration-2---cluster-harvester-with-minimal-possible-configuration-that-is-automatically-added-to-a-rancher-cluster) for the demonstration.
