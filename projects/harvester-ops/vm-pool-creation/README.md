@@ -31,7 +31,7 @@ tofu init -upgrade && tofu apply -auto-approve
 tofu destroy -auto-approve
 ```
 
-# DEMOSTRATION - Given a Harvester cluster, create an Ubuntu Image and a single Virtual Machine (using the default variables)
+# DEMOSTRATION 1 - Given a Harvester cluster, create an Ubuntu Image and a single Virtual Machine (using the default variables)
 
 ### Create the Ubuntu Image
 
@@ -84,3 +84,87 @@ kubeconfig_file_name      = "<PREFIX>_kube_config.yml"
 #### Test VM access
 
 ![](../../../images/HARV_OPS_PROJ_README_27.png)
+
+# DEMOSTRATION 2 - Given a Harvester cluster, create an Ubuntu Image, a VM Network, and a single Virtual Machine (using the default variables)
+
+### Create the Ubuntu Image
+
+**Check out demo 1 to see how to do it.**
+
+### Create the VM Network (and all related resources)
+
+```console
+$ cd projects/harvester-ops/network-creation
+```
+
+#### Configure the terraform.tfvars file with the minimum necessary configurations
+
+```console
+$ cat terraform.tfvars
+harvester_url             = "<HARVESTER_URL>"
+kubeconfig_file_path      = "../../google-cloud/"
+kubeconfig_file_name      = "<PREFIX>_kube_config.yml"
+private_ssh_key_file_path = "../../google-cloud/"
+private_ssh_key_file_name = "<PREFIX>-ssh_private_key.pem"
+```
+
+#### Demonstration of applying Terraform files
+
+![](../../../images/HARV_OPS_PROJ_README_28.png)
+![](../../../images/HARV_OPS_PROJ_README_29.png)
+
+#### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks
+
+![](../../../images/HARV_OPS_PROJ_README_30.png)
+![](../../../images/HARV_OPS_PROJ_README_31.png)
+
+### Create the Virtual Machine
+
+```console
+$ cd ../vm-pool-creation
+```
+
+#### Configure the terraform.tfvars file with the minimum necessary configurations
+
+```console
+$ cat terraform.tfvars
+network_name              = "vlan2" # default value of the `network_name` variable of the `network-creation` project.
+harvester_url             = "<HARVESTER_URL>"
+kubeconfig_file_path      = "../../google-cloud/"
+kubeconfig_file_name      = "<PREFIX>_kube_config.yml"
+```
+
+#### Demonstration of applying Terraform files
+
+![](../../../images/HARV_OPS_PROJ_README_32.png)
+![](../../../images/HARV_OPS_PROJ_README_33.png)
+
+#### Harvester Cluster - UI | Virtual Machines
+
+![](../../../images/HARV_OPS_PROJ_README_34.png)
+
+#### Test VM access
+
+![](../../../images/HARV_OPS_PROJ_README_35.png)
+![](../../../images/HARV_OPS_PROJ_README_36.png)
+![](../../../images/HARV_OPS_PROJ_README_37.png)
+
+Remember that the Virtual Network created by the *network-creation* project has the following characteristics:
+
+```console
+# modules/harvester/deployment-script/qemu_vlanx_xml.tpl file
+<network>
+  <name>${name}</name>
+  <bridge name="${nic}"/>
+  <forward mode="nat"/>
+  <ip address="${ip_base}.1" netmask="255.255.255.0">
+    <dhcp>
+      <range start="${ip_base}.2" end="${ip_base}.254"/>
+    </dhcp>
+  </ip>
+</network>
+```
+
+Where the variable `ip_base` is initialized with `"192.168.123"`.
+
+![](../../../images/HARV_OPS_PROJ_README_38.png)

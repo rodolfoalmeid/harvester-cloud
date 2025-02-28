@@ -33,7 +33,7 @@ No resources.
 | <a name="input_memory"></a> [memory](#input\_memory) | Specifies the amount of memory allocated to each VM, in GB. Default is '4'. | `number` | `4` | no |
 | <a name="input_network_name"></a> [network\_name](#input\_network\_name) | Specifies the name of the Harvester VM network that was created. Default is an empty string (''). | `string` | `""` | no |
 | <a name="input_os_disk_size"></a> [os\_disk\_size](#input\_os\_disk\_size) | Specifies the size of the root disk attached to each VM, in GB. Default is '25'. | `number` | `25` | no |
-| <a name="input_ssh_password"></a> [ssh\_password](#input\_ssh\_password) | Specifies the password used for SSH login. Default is 'null'. | `string` | `null` | no |
+| <a name="input_ssh_password"></a> [ssh\_password](#input\_ssh\_password) | Specifies the password used for SSH login. Default is 'SecretPassword.123'. | `string` | `"SecretPassword.123"` | no |
 | <a name="input_ssh_username"></a> [ssh\_username](#input\_ssh\_username) | Specifies the username used for SSH login. Default is 'ubuntu'. | `string` | `"ubuntu"` | no |
 | <a name="input_startup_script"></a> [startup\_script](#input\_startup\_script) | Specifies a custom startup script to be executed when the VM is initialized. Default is 'null'. | `string` | `null` | no |
 | <a name="input_vm_count"></a> [vm\_count](#input\_vm\_count) | Specifies the number of VM instances to be created. Default is '1'. | `number` | `1` | no |

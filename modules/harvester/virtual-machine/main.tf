@@ -81,4 +81,7 @@ resource "harvester_virtualmachine" "default" {
   cloudinit {
     user_data_secret_name = harvester_cloudinit_secret.cloud-config.name
   }
+  timeouts {
+    create = "15m"
+  }
 }
