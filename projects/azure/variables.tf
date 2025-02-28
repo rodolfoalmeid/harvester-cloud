@@ -149,8 +149,8 @@ variable "harvester_version" {
   type        = string
   default     = "v1.4.1"
   validation {
-    condition     = can(regex("^v[0-9]+\\.[0-9]+\\.[0-9]+$", var.harvester_version))
-    error_message = "The Harvester version must start with 'v' followed by a valid version number (e.g., v1.4.1)."
+    condition     = can(regex("^v.*$", var.harvester_version))
+    error_message = "The Harvester version must start with 'v' (e.g., v1.4.1, v1.4.2-rc2, v1.5.0-dev-20250217)."
   }
 }
 
