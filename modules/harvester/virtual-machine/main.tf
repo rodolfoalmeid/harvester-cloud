@@ -1,3 +1,36 @@
+resource "harvester_cloudinit_secret" "cloud-config" {
+  name         = "${var.vm_prefix}-cloud-config"
+  namespace    = var.vm_namespace
+  user_data    = <<-EOF
+    #cloud-config
+    username: "${var.ssh_username}"
+    password: "${var.ssh_password}"
+    chpasswd:
+      expire: false
+    ssh_pwauth: true
+    package_update: true
+    packages:
+      - qemu-guest-agent
+    runcmd:
+      - - systemctl
+        - enable
+        - '--now'
+        - qemu-guest-agent
+      - - sed
+        - -i
+        - "s/#PasswordAuthentication.*/PasswordAuthentication yes/g"
+        - /etc/ssh/sshd_config
+      - - sed
+        - -i
+        - "s@Include /etc/ssh/sshd_config.d/\\*.conf@#Include /etc/ssh/sshd_config.d/*.conf@g"
+        - /etc/ssh/sshd_config
+      - - systemctl
+        - restart
+        - ssh
+    EOF
+  network_data = ""
+}
+
 resource "random_string" "random" {
   length  = 4
   lower   = true
@@ -25,7 +58,7 @@ resource "harvester_virtualmachine" "default" {
   network_interface {
     name           = "nic-1"
     network_name   = var.network_name
-    type           = "bridge" #https://groups.google.com/g/kubevirt-dev/c/HyMWzPQGBoM
+    type           = "bridge"
     wait_for_lease = true
   }
   disk {
@@ -46,6 +79,6 @@ resource "harvester_virtualmachine" "default" {
     auto_delete = true
   }
   cloudinit {
-    user_data_base64 = var.startup_script
+    user_data_secret_name = harvester_cloudinit_secret.cloud-config.name
   }
 }

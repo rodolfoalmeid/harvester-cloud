@@ -7,8 +7,9 @@ module "harvester_vm" {
   ssh_password    = var.ssh_password
   cpu             = var.cpu
   memory          = var.memory
+  network_name    = var.network_name
   image_namespace = var.image_namespace
-  image_name      = var.os_image_name
+  image_name      = var.image_name
   os_disk_size    = var.os_disk_size
   data_disk_size  = var.data_disk_size
   startup_script  = var.startup_script

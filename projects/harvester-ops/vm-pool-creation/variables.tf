@@ -23,9 +23,9 @@ variable "ssh_username" {
 }
 
 variable "ssh_password" {
-  description = "Specifies the password used for SSH login. Default is 'null'."
+  description = "Specifies the password used for SSH login. Default is 'SecretPassword.123'."
   type        = string
-  default     = null
+  default     = "SecretPassword.123"
 }
 
 variable "cpu" {

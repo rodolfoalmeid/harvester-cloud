@@ -11,7 +11,7 @@ vm_namespace = "default"
 ssh_username = "ubuntu"
 
 ## -- Specifies the password used for SSH login.
-ssh_password = null
+ssh_password = "SecretPassword.123"
 
 ## -- Specifies the number of CPU cores allocated to each VM.
 cpu = 2
