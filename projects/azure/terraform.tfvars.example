@@ -25,14 +25,14 @@ create_vnet = "true"
 ## -- Specifies whether the instances should be Spot (preemptible) VMs.
 spot_instance = true
 
-## -- Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS').
-os_disk_type = "Standard_LRS"
+## -- Specifies the type of the disk attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS').
+os_disk_type = "StandardSSD_LRS"
 
 ## -- Specifies the size of the disk attached to each node, in GB.
 os_disk_size = 50
 
-## -- Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS').
-data_disk_type = "Standard_LRS"
+## -- Specifies the type of the disk attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS').
+data_disk_type = "StandardSSD_LRS"
 
 ## -- Specifies the size of the additional data disk for each VM instance, in GB.
 data_disk_size = 350
