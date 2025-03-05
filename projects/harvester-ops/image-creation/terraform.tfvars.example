@@ -1,0 +1,23 @@
+## -- Specifies whether a Harvester VM image should be created.
+create_image = true
+
+## -- Specifies the name of the Harvester image to be created.
+image_name = "ubuntu22"
+
+## -- Specifies the namespace in which the Harvester image will be created.
+image_namespace = "default"
+
+## -- Specifies the source type for the Harvester image.
+image_source_type = "download"
+
+## -- Specifies the URL used to download the Harvester image.
+image_url = "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+
+## -- Specifies the URL of the Harvester cluster API.
+harvester_url = ""
+
+## -- Specifies the full path where the Kubeconfig file is located.
+kubeconfig_file_path = ""
+
+## -- Specifies the name of the Kubeconfig file used to access the Harvester cluster.
+kubeconfig_file_name = ""

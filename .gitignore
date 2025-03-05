@@ -16,6 +16,7 @@ terraform.tfvars
 **/create_cloud_config.yaml
 **/join_cloud_config.yaml
 **/harvester_startup_script.sh
+**/vlanx.xml
 
 # Temporary files
 **/*.swp
