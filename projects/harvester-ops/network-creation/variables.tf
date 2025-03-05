@@ -1,3 +1,9 @@
+variable "ssh_username" {
+  description = "Specifies the username used for SSH authentication. Default is 'sles'."
+  type        = string
+  default     = "sles"
+}
+
 variable "cluster_network_name" {
   description = "Specifies the name of the Harvester Cluster Network. Default is 'cluster-vlan'."
   type        = string

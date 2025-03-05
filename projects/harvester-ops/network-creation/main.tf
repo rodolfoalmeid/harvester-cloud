@@ -4,7 +4,6 @@ locals {
   qemu_vlanx_xml_file              = "${path.cwd}/vlanx.xml"
   vlanx_ip_base                    = "192.168.123" # address=192.168.123.1 netmask=255.255.255.0 start=192.168.123.2 end=192.168.123.254
   harvester_network_interface_name = ["ens7"]      # Name of the NIC that is automatically created in Harvester nested VMs
-  ssh_username                     = "sles"
   kubeconfig_file                  = "${var.kubeconfig_file_path}/${var.kubeconfig_file_name}"
 }
 
@@ -23,7 +22,7 @@ resource "null_resource" "copy_qemu_vlanx_xml_file_to_first_node" {
   connection {
     type        = "ssh"
     host        = local.harvester_public_ip
-    user        = local.ssh_username
+    user        = var.ssh_username
     private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   }
   provisioner "file" {
@@ -35,7 +34,7 @@ resource "null_resource" "copy_qemu_vlanx_xml_file_to_first_node" {
 resource "ssh_resource" "create_vlanx" {
   depends_on  = [null_resource.copy_qemu_vlanx_xml_file_to_first_node]
   host        = local.harvester_public_ip
-  user        = local.ssh_username
+  user        = var.ssh_username
   private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   commands = [
     "sudo virsh net-define /tmp/${basename(local.qemu_vlanx_xml_file)} || true",
@@ -47,7 +46,7 @@ resource "ssh_resource" "create_vlanx" {
 resource "ssh_resource" "attach_network_interface" {
   depends_on  = [ssh_resource.create_vlanx]
   host        = local.harvester_public_ip
-  user        = local.ssh_username
+  user        = var.ssh_username
   private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   commands = [
     <<-EOT
