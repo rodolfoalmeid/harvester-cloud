@@ -115,9 +115,9 @@ variable "spot_instance" {
 }
 
 variable "os_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS'). Default is 'Premium_LRS'."
+  description = "Specifies the type of the disk attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS'). Default is 'StandardSSD_LRS'."
   type        = string
-  default     = "Premium_LRS"
+  default     = "StandardSSD_LRS"
 }
 
 variable "os_disk_size" {
@@ -127,9 +127,9 @@ variable "os_disk_size" {
 }
 
 variable "data_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS'). Default is 'Premium_LRS'."
+  description = "Specifies the type of the disk attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS'). Default is 'StandardSSD_LRS'."
   type        = string
-  default     = "Premium_LRS"
+  default     = "StandardSSD_LRS"
 }
 
 variable "data_disk_size" {
