@@ -20,9 +20,9 @@ locals {
   ssh_username                           = "sles"
   kubeconfig_file                        = "${path.cwd}/${var.prefix}_kube_config.yml"
   instance_type = (
-    var.harvester_node_count == 1 ? (var.harvester_cluster_size == "small" ? "Standard_D16as_v5" : "Standard_D32as_v5") :
-    var.harvester_node_count == 3 ? (var.harvester_cluster_size == "small" ? "Standard_D32as_v5" : "Standard_D64as_v5") :
-    "Standard_D64as_v5"
+    var.harvester_node_count == 1 ? (var.harvester_cluster_size == "small" ? "Standard_D16_v5" : "Standard_D32_v5") :
+    var.harvester_node_count == 3 ? (var.harvester_cluster_size == "small" ? "Standard_D32_v5" : "Standard_D64_v5") :
+    "Standard_D64_v5"
   )
 }
 

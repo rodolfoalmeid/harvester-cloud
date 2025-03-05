@@ -26,13 +26,13 @@ create_vnet = "true"
 spot_instance = true
 
 ## -- Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS').
-os_disk_type = "Premium_LRS"
+os_disk_type = "Standard_LRS"
 
 ## -- Specifies the size of the disk attached to each node, in GB.
 os_disk_size = 50
 
 ## -- Specifies the type of the disk attached to each node (e.g., 'Premium_LRS', 'Standard_LRS').
-data_disk_type = "Premium_LRS"
+data_disk_type = "Standard_LRS"
 
 ## -- Specifies the size of the additional data disk for each VM instance, in GB.
 data_disk_size = 350
