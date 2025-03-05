@@ -1,3 +1,6 @@
+## -- Specifies the username used for SSH authentication.
+ssh_username = "sles"
+
 ## -- Specifies the name of the Harvester Cluster Network.
 cluster_network_name = "cluster-vlan"
 
