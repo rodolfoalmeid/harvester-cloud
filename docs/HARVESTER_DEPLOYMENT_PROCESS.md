@@ -31,17 +31,13 @@ The reason for this is that each data disk is associated with a nested VM, as if
 
 ##### Harvester HA
 
-```console
      |→ Data Disk 1 → Harvester Node 1
 VM --|→ Data Disk 2 → Harvester Node 2
      |→ Data Disk 3 → Harvester Node 3
-```
 
 ##### Harvester Single-Node
 
-```console
 VM --|→ Data Disk 1 → Harvester Node 1
-```
 
 ### 2_ VM Setup
 
@@ -244,21 +240,37 @@ done
 
 Here, the script installs multiple `harvester-node` nested Virtual Machines based on the specified count (`${count}`).  
 
-- For the first node, it customizes the cloud configuration file (`create_cloud_config.yaml`) and starts the VM with PXE boot.  
-- For the second node, it customizes the cloud configuration for joining the cloud and updates the default iPXE boot file.  
-- For subsequent nodes, it copies and modifies the join configuration file for each node, adjusting the hostname and updating the iPXE file.  
+- For the first node, it customizes the cloud configuration file (`create_cloud_config.yaml`) and starts the VM with PXE boot.
 
-Each VM is installed using `virt-install` with specific resources (memory, CPU, disk) and configured for autostart.  
+###### */srv/www/harvester/default.ipxe* example
 
-###### */srv/www/harvester/create_cloud_config.yaml*
+```console
+#!ipxe
+dhcp
+kernel http://192.168.122.1/harvester-v1.4.1-vmlinuz-amd64 \
+    initrd=harvester-v1.4.1-initrd-amd64 \
+    ip=dhcp \
+    console=tty1 \
+    net.ifnames=1 \
+    rd.cos.disable \
+    rd.noverifyssl \
+    root=live:http://192.168.122.1/harvester-v1.4.1-rootfs-amd64.squashfs \
+    harvester.install.config_url=http://192.168.122.1/create_cloud_config.yaml\
+    harvester.install.skipchecks=true \
+    harvester.install.automatic=true
+initrd http://192.168.122.1/harvester-v1.4.1-initrd-amd64
+boot
+```
+
+###### */srv/www/harvester/create_cloud_config.yaml* example
 
 ```console
 #cloud-config
 scheme_version: 1
-token: ${token}
+token: SecretToken.123
 os:
-  hostname: ${hostname}
-  password: ${password}
+  hostname: your-prefix
+  password: SecretPassword.123
   ntp_servers:
   - 0.suse.pool.ntp.org
   - 1.suse.pool.ntp.org
@@ -273,26 +285,44 @@ install:
       mode: active-backup
       miimon: 100
   device: /dev/vda
-  iso_url: http://192.168.122.1/harvester-${version}-amd64.iso
+  iso_url: http://192.168.122.1/harvester-v1.4.1-amd64.iso
   tty: tty1,115200n8
   vip: 192.168.122.120
   vip_mode: static
-%{ if cluster_registration_url != "" }
-system_settings:
-  cluster-registration-url: ${cluster_registration_url}
-%{ endif }
 ```
 
-###### */srv/www/harvester/join_cloud_config.yaml*
+- For the second node, it customizes the cloud configuration for joining the cloud and updates the default iPXE boot file.
+
+###### */srv/www/harvester/default.ipxe* example
+
+```console
+#!ipxe
+dhcp
+kernel http://192.168.122.1/harvester-v1.4.1-vmlinuz-amd64 \
+    initrd=harvester-v1.4.1-initrd-amd64 \
+    ip=dhcp \
+    console=tty1 \
+    net.ifnames=1 \
+    rd.cos.disable \
+    rd.noverifyssl \
+    root=live:http://192.168.122.1/harvester-v1.4.1-rootfs-amd64.squashfs \
+    harvester.install.config_url=http://192.168.122.1/join_cloud_config.yaml \ # Here is the only change
+    harvester.install.skipchecks=true \
+    harvester.install.automatic=true
+initrd http://192.168.122.1/harvester-v1.4.1-initrd-amd64
+boot
+```
+
+###### */srv/www/harvester/join_cloud_config.yaml* example
 
 ```console
 #cloud-config
 scheme_version: 1
 server_url: https://192.168.122.120:443
-token: ${token}
+token: SecretToken.123
 os:
-  hostname: ${hostname}
-  password: ${password}
+  hostname: your-prefix
+  password: SecretPassword.123
   ntp_servers:
   - 0.suse.pool.ntp.org
   - 1.suse.pool.ntp.org
@@ -307,9 +337,61 @@ install:
       mode: active-backup
       miimon: 100
   device: /dev/vda
-  iso_url: http://192.168.122.1/harvester-${version}-amd64.iso
+  iso_url: http://192.168.122.1/harvester-v1.4.1-amd64.iso
   tty: tty1,115200n8
 ```
+
+- For subsequent nodes, it copies and modifies the join configuration file for each node, adjusting the hostname and updating the iPXE file.
+
+###### */srv/www/harvester/default.ipxe* example
+
+```console
+#!ipxe
+dhcp
+kernel http://192.168.122.1/harvester-v1.4.1-vmlinuz-amd64 \
+    initrd=harvester-v1.4.1-initrd-amd64 \
+    ip=dhcp \
+    console=tty1 \
+    net.ifnames=1 \
+    rd.cos.disable \
+    rd.noverifyssl \
+    root=live:http://192.168.122.1/harvester-v1.4.1-rootfs-amd64.squashfs \
+    harvester.install.config_url=http://192.168.122.1/join_cloud_config_2.yaml \ # Here is the only change
+    harvester.install.skipchecks=true \
+    harvester.install.automatic=true
+initrd http://192.168.122.1/harvester-v1.4.1-initrd-amd64
+boot
+```
+
+###### */srv/www/harvester/join_cloud_config_2.yaml* example
+
+```console
+#cloud-config
+scheme_version: 1
+server_url: https://192.168.122.120:443
+token: SecretToken.123
+os:
+  hostname: your-prefix
+  password: SecretPassword.123
+  ntp_servers:
+  - 0.suse.pool.ntp.org
+  - 1.suse.pool.ntp.org
+install:
+  mode: join
+  management_interface:
+    interfaces:
+      - name: ens3
+    default_route: true
+    method: dhcp
+    bond_options:
+      mode: active-backup
+      miimon: 100
+  device: /dev/vda
+  iso_url: http://192.168.122.1/harvester-v1.4.1-amd64.iso
+  tty: tty1,115200n8
+```
+
+Each VM is installed using `virt-install` with specific resources (memory, CPU, disk) and configured for autostart.  
 
 4. Monitoring nested VM states and restarting them when all are 'shut off'
 
@@ -393,4 +475,4 @@ sudo sed -i "/certificate-authority-data:/c\\    insecure-skip-tls-verify: true"
 
 The last part allows the integration of the Harvester cluster with a pre-existing Rancher cluster.
 
-Take a look [here](https://github.com/rancher/harvester-cloud/blob/main/projects/google-cloud/README.md#demostration-2---cluster-harvester-with-minimal-possible-configuration-that-is-automatically-added-to-a-rancher-cluster) for the demonstration.
+Take a look [here](https://github.com/rancher/harvester-cloud/blob/feature/issue-4/projects/google-cloud/README.md#demostration-2---cluster-harvester-with-minimal-possible-configuration-that-is-automatically-added-to-a-rancher-cluster) for the demonstration.
