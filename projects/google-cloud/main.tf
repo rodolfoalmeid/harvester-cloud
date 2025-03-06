@@ -1,6 +1,7 @@
 locals {
   sles_startup_script_template_file      = "../../modules/harvester/deployment-script/sles_startup_script_sh.tpl"
   sles_startup_script_file               = "${path.cwd}/sles_startup_script.sh"
+  disk_structure                         = "97"
   data_disk_name                         = "/dev/sd"
   data_disk_mount_point                  = "/mnt/datadisk"
   default_ipxe_script_template_file      = "../../modules/harvester/deployment-script/default_ipxe.tpl"
@@ -32,10 +33,11 @@ locals {
 
 resource "local_file" "sles_startup_script_config" {
   content = templatefile("${local.sles_startup_script_template_file}", {
-    version     = var.harvester_version,
-    count       = var.harvester_node_count,
-    disk_name   = local.data_disk_name,
-    mount_point = local.data_disk_mount_point
+    version        = var.harvester_version,
+    count          = var.harvester_node_count,
+    disk_name      = local.data_disk_name,
+    mount_point    = local.data_disk_mount_point,
+    disk_structure = local.disk_structure
   })
   file_permission = "0644"
   filename        = local.sles_startup_script_file

@@ -1,60 +1,39 @@
 variable "prefix" {
-  description = "Specifies the prefix added to the names of all resources. Default is 'gcp-tf'."
+  description = "Specifies the prefix added to the names of all resources. Default is 'do-tf'."
   type        = string
-  default     = "gcp-tf"
+  default     = "do-tf"
 }
 
-variable "project_id" {
-  description = "Specifies the Google Project ID that will contain all created resources. Default is 'gcp-tf'."
+variable "do_token" {
+  description = "DigitalOcean API token used to deploy the infrastructure. Default is 'null'."
   type        = string
-  default     = "gcp-tf"
+  default     = null
+}
+
+variable "os_image_id" {
+  description = "Specifies the custom OpenSUSE image uploaded to the DigitalOcean account. Default is 'null'."
+  type        = string
+  default     = null
 }
 
 variable "region" {
-  description = "Specifies the Google region used for all resources. Default is 'us-west2'."
+  description = "Specifies the DigitalOcean region used for all resources. Default is 'fra1'."
   type        = string
-  default     = "us-west2"
+  default     = "fra1"
   validation {
     condition = contains([
-      "asia-east1",
-      "asia-east2",
-      "asia-northeast1",
-      "asia-northeast2",
-      "asia-northeast3",
-      "asia-south1",
-      "asia-south2",
-      "asia-southeast1",
-      "asia-southeast2",
-      "australia-southeast1",
-      "australia-southeast2",
-      "europe-central2",
-      "europe-north1",
-      "europe-southwest1",
-      "europe-west1",
-      "europe-west10",
-      "europe-west12",
-      "europe-west2",
-      "europe-west3",
-      "europe-west4",
-      "europe-west6",
-      "europe-west8",
-      "europe-west9",
-      "me-central1",
-      "me-central2",
-      "me-west1",
-      "northamerica-northeast1",
-      "northamerica-northeast2",
-      "southamerica-east1",
-      "southamerica-west1",
-      "us-central1",
-      "us-east1",
-      "us-east4",
-      "us-east5",
-      "us-south1",
-      "us-west1",
-      "us-west2",
-      "us-west3",
-      "us-west4"
+      "nyc1",
+      "nyc2",
+      "nyc3",
+      "ams3",
+      "sfo2",
+      "sfo3",
+      "sgp1",
+      "lon1",
+      "fra1",
+      "tor1",
+      "blr1",
+      "syd1"
     ], var.region)
     error_message = "Invalid Region specified."
   }
@@ -78,68 +57,30 @@ variable "ssh_public_key_path" {
   default     = null
 }
 
-variable "ip_cidr_range" {
-  description = "Specifies the range of private IPs available for the Google Subnet. Default is '10.10.0.0/24'."
+variable "instance_type" {
+  description = "Specifies the name of the DigitalOcean Droplet type. Default is 'g-16vcpu-64gb'."
   type        = string
-  default     = "10.10.0.0/24"
+  default     = "g-16vcpu-64gb"
 }
 
-variable "create_vpc" {
-  description = "Specifies whether a VPC and Subnet should be created for the instances. Default is 'true'."
-  type        = bool
-  default     = true
-}
-
-variable "vpc" {
-  description = "Specifies the Google VPC used for all resources. Default is 'null'."
-  type        = string
-  default     = null
-}
-
-variable "subnet" {
-  description = "Specifies the Google Subnet used for all resources. Default is 'null'."
-  type        = string
-  default     = null
-}
-
-variable "create_firewall" {
-  description = "Specifies whether a Google Firewall should be created for all resources. Default is 'true'."
-  type        = bool
-  default     = true
-}
-
-variable "spot_instance" {
-  description = "Specifies whether the instances should be Spot (preemptible) VMs. Default is 'true'."
-  type        = bool
-  default     = true
-}
-
-variable "os_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
-  type        = string
-  default     = "pd-ssd"
-}
-
-variable "os_disk_size" {
-  description = "Specifies the size of the disk attached to each node, in GB. Default is '50'."
+variable "data_disk_count" {
+  description = "Specifies the number of additional data disks to create (1 or 3). Default is '1'."
   type        = number
-  default     = 50
-}
-
-variable "data_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
-  type        = string
-  default     = "pd-ssd"
+  default     = 1
+  validation {
+    condition     = contains([1, 3], var.data_disk_count)
+    error_message = "The number of data disks must be 1 or 3."
+  }
 }
 
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of each additional data disk attached to the Droplet, in GB. Default is '350'."
   type        = number
   default     = 350
 }
 
 variable "startup_script" {
-  description = "Specifies a custom startup script to run when the VMs start. Default is 'null'."
+  description = "Specifies a custom startup script to run when the Droplets start. Default is 'null'."
   type        = string
   default     = null
 }
