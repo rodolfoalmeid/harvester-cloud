@@ -35,3 +35,19 @@ Please note that all estimated costs shown are generic approximations that have 
 | Medium | Europe West | Regular | 3     | PREMIUM SSD LRS | 350 GB    | Standard_D64as_v5       | 3000                        |
 
 The calculations were done using the *[Microsoft Azure pricing calculator](https://azure.microsoft.com/en-us/pricing/calculator/?service=spot-advisor)*.
+
+# DigitalOcean cost analysis
+
+The following information provides an infrastructure cost estimation for deploying Harvester on DigitalOcean using all available options in the Terraform script.
+
+Please note that all estimated costs shown are generic approximations that have been rounded up and may not be 100% accurate, as the total price will vary depending on each specific scenario.
+Please also note that on DigitalOcean is not possible to deploy spot droplets.
+
+| Type   | Region      |  Disks | Disk Type | Disk Size | Required Instance    | Estimated Cost per Month ($) |
+|--------|-------------|--------|----------|-----------|----------------------|------------------------------|
+| Small  | Europe West | 1      | SSD      | 350 GB    | g-16vcpu-64gb-intel  | 540                          |
+| Small  | Europe West | 3      | SSD      | 350 GB    | g-32vcpu-128gb-intel | 1100                         |
+| Medium | Europe West | 1      | SSD      | 350 GB    | g-32vcpu-128gb-intel | 1050                         |
+| Medium | Europe West | 3      | NVME SSD | 350 GB    | g-60vcpu-240gb-intel | 2400                         |
+
+The calculations were done using the *[DigitalOcean pricing calculator](https://www.digitalocean.com/pricing/calculator)*.
