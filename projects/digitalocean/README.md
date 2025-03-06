@@ -77,7 +77,7 @@ $ doctl compute image list-user | grep "openSUSE-Leap-15.6-Minimal"
 
 ```console
 $ cat terraform.tfvars
-prefix               = "jlagos"
+prefix               = "jlagos-harvester"
 do_token             = "<DIGITALOCEAN_TOKEN>"
 os_image_id          = "179519713"
 region               = "fra1"
@@ -90,31 +90,32 @@ harvester_node_count = 3
 ![](../../images/DO_PROJ_README_2.png)
 ![](../../images/DO_PROJ_README_3.png)
 ![](../../images/DO_PROJ_README_4.png)
+![](../../images/DO_PROJ_README_5.png)
 
 #### How to log in via SSH into the DigitalOcean Droplet VM
 
-![](../../images/DO_PROJ_README_5.png)
+![](../../images/DO_PROJ_README_6.png)
 
 #### How to log in via SSH into nested VMs (Harvester nodes)
 
-![](../../images/DO_PROJ_README_6.png)
+![](../../images/DO_PROJ_README_7.png)
 
 #### How to run `kubectl` commands on Harvester cluster
 
-![](../../images/DO_PROJ_README_7.png)
+![](../../images/DO_PROJ_README_8.png)
 
 # DEMOSTRATION 2 - Cluster Harvester (with minimal possible configuration) that is automatically added to a Rancher cluster
 
 #### Create API keys from the Rancher cluster
 
-![](../../images/DO_PROJ_README_8.png)
 ![](../../images/DO_PROJ_README_9.png)
+![](../../images/DO_PROJ_README_10.png)
 
 #### Configure the terraform.tfvars file by entering the Rancher API key
 
 ```console
 $ cat terraform.tfvars
-prefix               = "jlagos"
+prefix               = "jlagos-harvester"
 do_token             = "<DIGITALOCEAN_TOKEN>"
 os_image_id          = "179519713"
 region               = "fra1"
@@ -129,10 +130,10 @@ rancher_insecure     = true
 
 ##### Harvester UI
 
-![](../../images/DO_PROJ_README_10.png) 
+![](../../images/DO_PROJ_README_11.png) 
 
 ##### Rancher UI
 
-![](../../images/DO_PROJ_README_11.png)
+![](../../images/DO_PROJ_README_12.png)
 
 **PS: The Rancher cluster was created on an RKE2 Kubernetes cluster on Google Cloud infrastructure. To replicate the scenario, you can take a look [here](https://github.com/rancher/tf-rancher-up/tree/main/recipes/upstream/google-cloud/rke2).**
