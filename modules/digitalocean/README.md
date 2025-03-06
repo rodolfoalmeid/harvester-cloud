@@ -1,17 +1,19 @@
 # Terraform | DigitalOcean - Preparatory steps
 
-In order for Terraform to run operations on your behalf, you must [install doctl utility](https://docs.digitalocean.com/reference/doctl/how-to/install/)
+In order for Terraform to run operations on your behalf, you must [install and configure the doctl utility](https://docs.digitalocean.com/reference/doctl/how-to/install/).
 
 ## Example
 
-#### macOS installation and setup and How to generate [Personal Access Token on DigitalOcean](https://docs.digitalocean.com/reference/api/create-personal-access-token/#:~:text=Creating%20a%20Token,the%20Generate%20New%20Token%20button.)
+#### macOS installation and setup
+
+##### How to generate the [personal Access Token](https://docs.digitalocean.com/reference/api/create-personal-access-token/#creating-a-token)
 
 ```bash
 brew update && brew install doctl
 ```
 
 ```bash
-doctl auth init # after executing the command introduce the Personal Access Token generated
+doctl auth init # after executing the command enter the generated Personal Access Token
 ```
 
 ##### If there are other active subscriptions, run

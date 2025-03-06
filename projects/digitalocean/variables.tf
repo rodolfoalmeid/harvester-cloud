@@ -4,21 +4,20 @@ variable "prefix" {
   default     = "do-tf"
 }
 
-
-variable do_token {
-  description = "Specifies the DigitalOcean used to deploy infrastructure"
-  type = string
-  default = null
+variable "do_token" {
+  description = "DigitalOcean API token used to deploy the infrastructure. Default is 'null'."
+  type        = string
+  default     = null
 }
 
-variable  os_image_id {
-  description = "Specifies custom OpenSuse image uploaded to DO account"
-  type    = string
-  default = null
+variable "os_image_id" {
+  description = "Specifies the custom OpenSUSE image uploaded to the DigitalOcean account. Default is 'null'."
+  type        = string
+  default     = null
 }
 
 variable "region" {
-  description = "Specifies the DigitalOcean region used for all resources. Default is 'nyc1'."
+  description = "Specifies the DigitalOcean region used for all resources. Default is 'fra1'."
   type        = string
   default     = "fra1"
   validation {
@@ -58,14 +57,30 @@ variable "ssh_public_key_path" {
   default     = null
 }
 
+variable "instance_type" {
+  description = "Specifies the name of the DigitalOcean Droplet type. Default is 'g-16vcpu-64gb'."
+  type        = string
+  default     = "g-16vcpu-64gb"
+}
+
+variable "data_disk_count" {
+  description = "Specifies the number of additional data disks to create (1 or 3). Default is '1'."
+  type        = number
+  default     = 1
+  validation {
+    condition     = contains([1, 3], var.data_disk_count)
+    error_message = "The number of data disks must be 1 or 3."
+  }
+}
+
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of each additional data disk attached to the Droplet, in GB. Default is '350'."
   type        = number
   default     = 350
 }
 
 variable "startup_script" {
-  description = "Specifies a custom startup script to run when the VMs start. Default is 'null'."
+  description = "Specifies a custom startup script to run when the Droplets start. Default is 'null'."
   type        = string
   default     = null
 }
@@ -75,8 +90,8 @@ variable "harvester_version" {
   type        = string
   default     = "v1.4.1"
   validation {
-    condition     = can(regex("^v[0-9]+\\.[0-9]+\\.[0-9]+$", var.harvester_version))
-    error_message = "The Harvester version must start with 'v' followed by a valid version number (e.g., v1.4.1)."
+    condition     = can(regex("^v.*$", var.harvester_version))
+    error_message = "The Harvester version must start with 'v' (e.g., v1.4.1, v1.4.2-rc2, v1.5.0-dev-20250217)."
   }
 }
 

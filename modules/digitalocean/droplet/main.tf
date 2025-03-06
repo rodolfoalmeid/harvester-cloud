@@ -31,32 +31,31 @@ resource "digitalocean_ssh_key" "do_pub_created_ssh" {
 }
 
 resource "digitalocean_volume" "data_disk" {
-  count                = var.data_disk_count
-  name                 = "${var.prefix}-data-disk-${count.index + 1}"
-  size                 = var.data_disk_size
-  region               = var.region
+  count  = var.data_disk_count
+  name   = "${var.prefix}-data-disk-${count.index + 1}"
+  size   = var.data_disk_size
+  region = var.region
 }
 
 resource "digitalocean_volume_attachment" "data_disk_attachment" {
-  count              = var.data_disk_count
-  volume_id          = digitalocean_volume.data_disk[count.index].id
-  droplet_id         = digitalocean_droplet.nodes[0].id
+  count      = var.data_disk_count
+  volume_id  = digitalocean_volume.data_disk[count.index].id
+  droplet_id = digitalocean_droplet.nodes[0].id
 }
 
 resource "digitalocean_droplet" "nodes" {
-  count     = local.instance_count
-  name      = "node-${var.prefix}-${count.index + 1}"
-  tags      = ["user:${var.prefix}"]
-  region    = var.region
-  size      = var.instance_type
-  image     = var.os_image_id
+  count    = local.instance_count
+  name     = "node-${var.prefix}-${count.index + 1}"
+  tags     = ["user:${var.prefix}"]
+  region   = var.region
+  size     = var.instance_type
+  image    = var.os_image_id
   ssh_keys = [digitalocean_ssh_key.do_pub_created_ssh.id]
 }
 
 resource "digitalocean_firewall" "example_firewall" {
   name        = "${var.prefix}-harvester-firewall"
   droplet_ids = [digitalocean_droplet.nodes[0].id]
-
   dynamic "inbound_rule" {
     for_each = toset([
       "22", "68", "443", "2112-32767"
@@ -67,7 +66,6 @@ resource "digitalocean_firewall" "example_firewall" {
       source_addresses = ["0.0.0.0/0", "::/0"]
     }
   }
-
   dynamic "inbound_rule" {
     for_each = toset([
       "22", "68", "443", "2112-32767"
@@ -79,18 +77,18 @@ resource "digitalocean_firewall" "example_firewall" {
     }
   }
   outbound_rule {
-    protocol   = "tcp"
-    port_range = "all"
+    protocol              = "tcp"
+    port_range            = "all"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
   outbound_rule {
-    protocol   = "udp"
-    port_range = "all"
+    protocol              = "udp"
+    port_range            = "all"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
 }
 
-resource null_resource "startup_configuration" {
+resource "null_resource" "startup_configuration" {
   connection {
     type        = "ssh"
     host        = digitalocean_droplet.nodes[0].ipv4_address
@@ -99,7 +97,7 @@ resource null_resource "startup_configuration" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo 'installing kernel modules required'",
+      "echo 'Installing required Kernel modules...'",
       "sudo zypper --non-interactive remove kernel-default-base > /dev/null 2>&1",
       "sudo zypper --non-interactive install kernel-default cron > /dev/null 2>&1",
       "sudo reboot > /dev/null 2>&1"
@@ -111,10 +109,9 @@ resource null_resource "startup_configuration" {
   }
   provisioner "remote-exec" {
     inline = [
-      "echo 'executing OpenSUSE startup_script'",
+      "echo 'Executing the OpenSUSE startup_script...'",
       "sudo chmod +x /tmp/startup_script.sh > /dev/null 2>&1",
       "sudo bash /tmp/startup_script.sh > /dev/null 2>&1"
     ]
   }
 }
-

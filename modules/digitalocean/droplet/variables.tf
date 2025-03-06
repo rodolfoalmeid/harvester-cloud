@@ -4,14 +4,14 @@ variable "prefix" {
   default     = "do-tf"
 }
 
-variable  os_image_id {
-  description = "Specifies custom OpenSuse image uploaded to DO account"
-  type    = string
-  default = null
+variable "os_image_id" {
+  description = "Specifies the custom OpenSUSE image uploaded to the DigitalOcean account. Default is 'null'."
+  type        = string
+  default     = null
 }
 
 variable "region" {
-  description = "Specifies the DigitalOcean region used for all resources. Default is 'nyc1'."
+  description = "Specifies the DigitalOcean region used for all resources. Default is 'fra1'."
   type        = string
   default     = "fra1"
   validation {
@@ -51,15 +51,14 @@ variable "ssh_public_key_path" {
   default     = null
 }
 
-
 variable "instance_type" {
-  description = "Specifies the name of the DigitalOcean droplet type. Default is 'g-16vcpu-64gb'."
+  description = "Specifies the name of the DigitalOcean Droplet type. Default is 'g-16vcpu-64gb'."
   type        = string
   default     = "g-16vcpu-64gb"
 }
 
 variable "data_disk_count" {
-  description = "Specifies the number of data disks to create (1 or 3). Default is '1'."
+  description = "Specifies the number of additional data disks to create (1 or 3). Default is '1'."
   type        = number
   default     = 1
   validation {
@@ -68,15 +67,14 @@ variable "data_disk_count" {
   }
 }
 
-
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of each additional data disk attached to the Droplet, in GB. Default is '350'."
   type        = number
   default     = 350
 }
 
 variable "startup_script" {
-  description = "Specifies a custom startup script to run when the VMs start. Default is 'null'."
+  description = "Specifies a custom startup script to run when the Droplets start. Default is 'null'."
   type        = string
   default     = null
 }

@@ -152,7 +152,6 @@ variable "harvester_version" {
     condition     = can(regex("^v.*$", var.harvester_version))
     error_message = "The Harvester version must start with 'v' (e.g., v1.4.1, v1.4.2-rc2, v1.5.0-dev-20250217)."
   }
-
 }
 
 variable "harvester_node_count" {
@@ -181,7 +180,6 @@ variable "harvester_cluster_size" {
   description = "Specifies the size of the Harvester cluster. Allowed values are 'small' (8 CPUs, 32 GB RAM) and 'medium' (16 CPUs, 64 GB RAM). Default is 'small'."
   type        = string
   default     = "small"
-
   validation {
     condition     = contains(["small", "medium"], var.harvester_cluster_size)
     error_message = "Invalid value for harvester_cluster_size. Allowed values are 'small' or 'medium'."

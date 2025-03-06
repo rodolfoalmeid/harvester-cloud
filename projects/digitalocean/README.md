@@ -1,17 +1,21 @@
 # How to create resources
 
-- Copy `./terraform.tfvars.exmaple` to `./terraform.tfvars`
+- Copy `./terraform.tfvars.example` to `./terraform.tfvars`
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
-    - `os_image_id` To specify OpenSUSE image ID uploaded to DigitalOcean Account.
-    - `do_token` to specify token used to create resources in DigitalOcean account
-    - `region` to specify the digitalocean region where resources will be created
+    - `os_image_id` to specify the OpenSUSE image ID uploaded to your DigitalOcean account
+    - `do_token` to specify the DigitalOcean API token used to create resources
+    - `region` to specify the DigitalOcean region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
-- Make sure you are logged in your DigitalOcean account using doctl utility, See the preparatory steps [here](../../modules/digitalocean/README.md).
-- Make sure you have uploaded OpenSUSE Leap to the DigitalOcean organization. The actual image recommended for the Terraform to run is OpenSUSE Leap 15.6, You can download it by clicking here [OpenSUSE Leap Minimal cloud 15.6](https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2). See the steps to upload the OpenSUSE image downloaded to DigitalOcean [here](https://docs.digitalocean.com/products/custom-images/how-to/upload/) 
-- Make sure you have configured variable `os_image_id` with the correct ID pointing to the OpenSUSE Leap image recently uploaded to DigitalOcean Account. You can execute the following command `doctl compute image list-user | grep "<name>"` to extract the image ID required.
+- Make sure you are logged into your DigitalOcean account using the `doctl` utility. See the preparatory steps [here](../../modules/digitalocean/README.md).
+- Ensure that the OpenSUSE Leap image has been uploaded to your DigitalOcean organization. The recommended version for Terraform is OpenSUSE Leap 15.6. You can download it from [here](https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2).  
+  See the steps to upload the downloaded OpenSUSE image to DigitalOcean [here](https://docs.digitalocean.com/products/custom-images/how-to/upload/).
+- Update the variable `os_image_id` with the correct ID of the uploaded OpenSUSE Leap image. You can retrieve the image ID by running:
 
+```bash
+doctl compute image list-user | grep "<NAME>"
+```
 
 #### Terraform Apply
 
@@ -65,19 +69,16 @@ ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harves
 
 #### Extract Image ID using doctl utility required for Terraform to run
 
-```bash
-
+```console
 $ doctl compute image list-user | grep "openSUSE-Leap-15.6-Minimal"
-
 179519713    openSUSE-Leap-15.6-Minimal                            custom      Unknown OS              false     7
-
 ```
 
 #### Configure the terraform.tfvars file with the minimum necessary configurations
 
 ```console
 $ cat terraform.tfvars
-prefix               = "jlagos-harvester"
+prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
 os_image_id          = "179519713"
 region               = "fra1"
@@ -115,7 +116,7 @@ harvester_node_count = 3
 
 ```console
 $ cat terraform.tfvars
-prefix               = "jlagos-harvester"
+prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
 os_image_id          = "179519713"
 region               = "fra1"

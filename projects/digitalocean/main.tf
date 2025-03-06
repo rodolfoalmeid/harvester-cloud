@@ -60,7 +60,6 @@ resource "local_file" "create_cloud_config_yaml" {
   filename        = local.create_cloud_config_file
 }
 
-
 resource "local_file" "join_cloud_config_yaml" {
   content = templatefile("${local.join_cloud_config_template_file}", {
     version  = var.harvester_version,
@@ -84,7 +83,6 @@ resource "local_file" "harvester_startup_script" {
   file_permission = "0644"
   filename        = local.harvester_startup_script_file
 }
-
 
 module "harvester_node" {
   depends_on           = [local_file.sles_startup_script_config]
@@ -120,7 +118,6 @@ resource "null_resource" "harvester_iso_download_checking" {
     }
   }
 }
-
 
 resource "null_resource" "copy_files_to_first_node" {
   depends_on = [null_resource.harvester_iso_download_checking]
