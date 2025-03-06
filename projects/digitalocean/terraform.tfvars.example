@@ -1,13 +1,13 @@
 ## -- Specifies the prefix added to the names of all resources.
 prefix = "do-tf"
 
-## -- Specifies the Azure Subscription ID that will contain all created resources.
+## -- Specifies the DigitalOcean Token that will be used to create cloud resources.
 do_token = ""
 
 ## -- Specifies the DigitalOcean Image ID used for droplet creation
 os_image_id = ""
 
-## -- Specifies the Azure region used for all resources.
+## -- Specifies the DigitalOcean region used for all resources.
 region = "fra1"
 
 ## -- Specifies whether a new SSH key pair needs to be created for the instances.
