@@ -61,3 +61,12 @@ jobs:
       - name: Run Terraform Plan
         run: terraform plan -var "subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}"
         working-directory: projects/azure/
+  digitalocean_terraform_plan:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: projects/digitalocean/
+      - name: Run Terraform Plan
+        run: terraform plan -var "do_token=${{ secrets.DIGITALOCEAN_TOKEN }}"
+        working-directory: projects/digitalocean/

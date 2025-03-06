@@ -1,7 +1,7 @@
 locals {
   sles_startup_script_template_file      = "../../modules/harvester/deployment-script/sles_startup_script_sh.tpl"
   sles_startup_script_file               = "${path.cwd}/sles_startup_script.sh"
-  disk_structure                         = "97"
+  disk_structure                         = "96"
   data_disk_name                         = "/dev/sd"
   data_disk_mount_point                  = "/mnt/datadisk"
   default_ipxe_script_template_file      = "../../modules/harvester/deployment-script/default_ipxe.tpl"
@@ -18,12 +18,12 @@ locals {
   create_ssh_key_pair                    = var.create_ssh_key_pair == true ? false : true
   ssh_private_key_path                   = var.ssh_private_key_path == null ? "${path.cwd}/${var.prefix}-ssh_private_key.pem" : var.ssh_private_key_path
   ssh_public_key_path                    = var.ssh_public_key_path == null ? "${path.cwd}/${var.prefix}-ssh_public_key.pem" : var.ssh_public_key_path
-  ssh_username                           = "sles"
+  ssh_username                           = "opensuse"
   kubeconfig_file                        = "${path.cwd}/${var.prefix}_kube_config.yml"
   instance_type = (
-    var.harvester_node_count == 1 ? (var.harvester_cluster_size == "small" ? "Standard_D16_v5" : "Standard_D32_v5") :
-    var.harvester_node_count == 3 ? (var.harvester_cluster_size == "small" ? "Standard_D32_v5" : "Standard_D64_v5") :
-    "Standard_D64_v5"
+    var.harvester_node_count == 1 ? (var.harvester_cluster_size == "small" ? "g-16vcpu-64gb-intel" : "g-32vcpu-128gb-intel") :
+    var.harvester_node_count == 3 ? (var.harvester_cluster_size == "small" ? "g-32vcpu-128gb-intel" : "g-60vcpu-240gb-intel") :
+    "g-60vcpu-240gb-intel"
   )
 }
 
@@ -37,11 +37,6 @@ resource "local_file" "sles_startup_script_config" {
   })
   file_permission = "0644"
   filename        = local.sles_startup_script_file
-}
-
-data "local_file" "sles_startup_script" {
-  depends_on = [local_file.sles_startup_script_config]
-  filename   = local.sles_startup_script_file
 }
 
 resource "local_file" "default_ipxe_script_config" {
@@ -64,6 +59,7 @@ resource "local_file" "create_cloud_config_yaml" {
   file_permission = "0644"
   filename        = local.create_cloud_config_file
 }
+
 
 resource "local_file" "join_cloud_config_yaml" {
   content = templatefile("${local.join_cloud_config_template_file}", {
@@ -89,24 +85,20 @@ resource "local_file" "harvester_startup_script" {
   filename        = local.harvester_startup_script_file
 }
 
+
 module "harvester_node" {
   depends_on           = [local_file.sles_startup_script_config]
-  source               = "../../modules/azure/virtual-machine"
+  source               = "../../modules/digitalocean/droplet"
   prefix               = var.prefix
   region               = var.region
   create_ssh_key_pair  = var.create_ssh_key_pair
   ssh_private_key_path = local.ssh_private_key_path
   ssh_public_key_path  = local.ssh_public_key_path
-  ip_cidr_range        = var.ip_cidr_range
-  os_disk_type         = var.os_disk_type
-  os_disk_size         = var.os_disk_size
   instance_type        = local.instance_type
-  create_vnet          = var.create_vnet
-  spot_instance        = var.spot_instance
   data_disk_count      = var.harvester_node_count
-  data_disk_type       = var.data_disk_type
   data_disk_size       = var.data_disk_size
-  startup_script       = data.local_file.sles_startup_script.content
+  startup_script       = local.sles_startup_script_file
+  os_image_id          = var.os_image_id
 }
 
 data "local_file" "ssh_private_key" {
@@ -128,6 +120,7 @@ resource "null_resource" "harvester_iso_download_checking" {
     }
   }
 }
+
 
 resource "null_resource" "copy_files_to_first_node" {
   depends_on = [null_resource.harvester_iso_download_checking]
