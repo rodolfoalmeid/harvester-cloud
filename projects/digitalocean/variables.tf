@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "Specifies the prefix added to the names of all resources. Default is 'azure-tf'."
+  description = "Specifies the prefix added to the names of all resources. Default is 'do-tf'."
   type        = string
   default     = "do-tf"
 }

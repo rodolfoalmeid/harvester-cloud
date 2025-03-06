@@ -1,5 +1,5 @@
 variable "prefix" {
-  description = "Specifies the prefix added to the names of all resources. Default is 'azure-tf'."
+  description = "Specifies the prefix added to the names of all resources. Default is 'do-tf'."
   type        = string
   default     = "do-tf"
 }
@@ -53,7 +53,7 @@ variable "ssh_public_key_path" {
 
 
 variable "instance_type" {
-  description = "Specifies the name of an Azure Virtual Machine type. Default is 'g-16vcpu-64gb'."
+  description = "Specifies the name of the DigitalOcean droplet type. Default is 'g-16vcpu-64gb'."
   type        = string
   default     = "g-16vcpu-64gb"
 }
