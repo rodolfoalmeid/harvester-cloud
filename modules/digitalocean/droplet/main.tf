@@ -49,7 +49,7 @@ resource "digitalocean_droplet" "nodes" {
   tags     = ["user:${var.prefix}"]
   region   = var.region
   size     = var.instance_type
-  image    = var.os_image_id
+  image    = var.os_image_id == null ? "123456789" : var.os_image_id
   ssh_keys = [digitalocean_ssh_key.do_pub_created_ssh.id]
 }
 
