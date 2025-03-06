@@ -71,13 +71,11 @@ jobs:
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: "1.10.5"
-      - name: Authenticate to DigitalOcean
-        uses: digitalocean/app_action/deploy@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_TOKEN }}
       - name: Initialize Terraform
         run: terraform init
         working-directory: projects/digitalocean/
       - name: Run Terraform Plan
-        run: terraform plan -var "do_token=${{ secrets.DIGITALOCEAN_TOKEN }}"
+        env:
+          DIGITALOCEAN_TOKEN: ${{ secrets.DIGITALOCEAN_TOKEN }}
+        run: terraform plan -var "do_token=$DIGITALOCEAN_TOKEN"
         working-directory: projects/digitalocean/
