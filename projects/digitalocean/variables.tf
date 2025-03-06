@@ -11,7 +11,7 @@ variable do_token {
   default = null
 }
 
-variable  os_image_id{
+variable  os_image_id {
   description = "Specifies custom OpenSuse image uploaded to DO account"
   type    = string
   default = null
