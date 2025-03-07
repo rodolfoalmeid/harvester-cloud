@@ -39,6 +39,8 @@ tofu destroy -auto-approve
 $ cd projects/harvester-ops/image-creation
 ```
 
+**NB: The default image is now openSUSE Leap 15.x.**
+
 #### Configure the terraform.tfvars file with the minimum necessary configurations
 
 ```console
@@ -90,6 +92,8 @@ kubeconfig_file_name      = "<PREFIX>_kube_config.yml"
 ### Create the Ubuntu Image
 
 **Check out demo 1 to see how to do it.**
+
+**NB: The default image is now openSUSE Leap 15.x.**
 
 ### Create the VM Network (and all related resources)
 

@@ -17,9 +17,9 @@ variable "vm_namespace" {
 }
 
 variable "ssh_username" {
-  description = "Specifies the username used for SSH login. Default is 'ubuntu'."
+  description = "Specifies the username used for SSH login (Harvester VMs). Default is 'opensuse'."
   type        = string
-  default     = "ubuntu"
+  default     = "opensuse"
 }
 
 variable "ssh_password" {
@@ -53,9 +53,9 @@ variable "image_namespace" {
 }
 
 variable "image_name" {
-  description = "Specifies the OS image name. Default is 'ubuntu22'."
+  description = "Specifies the OS image name. Default is 'opensuse-leap-15-6'."
   type        = string
-  default     = "ubuntu22"
+  default     = "opensuse-leap-15-6"
 }
 
 variable "os_disk_size" {

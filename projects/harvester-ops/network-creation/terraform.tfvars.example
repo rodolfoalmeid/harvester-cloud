@@ -1,4 +1,4 @@
-## -- Specifies the username used for SSH authentication.
+## -- Specifies the username used for SSH authentication (Harvester nodes).
 ssh_username = "sles"
 
 ## -- Specifies the name of the Harvester Cluster Network.
