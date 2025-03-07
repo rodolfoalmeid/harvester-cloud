@@ -4,7 +4,7 @@ prefix = "do-tf"
 ## -- DigitalOcean API token used to deploy the infrastructure.
 do_token = null
 
-## -- Specifies the custom OpenSUSE image uploaded to the DigitalOcean account.
+## -- Specifies the custom openSUSE image uploaded to the DigitalOcean account.
 os_image_id = null
 
 ## -- Specifies the DigitalOcean region used for all resources.

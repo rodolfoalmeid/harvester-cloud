@@ -7,8 +7,8 @@ vm_count = 1
 ## -- Specifies the namespace where the VMs will be created.
 vm_namespace = "default"
 
-## -- Specifies the username used for SSH login.
-ssh_username = "ubuntu"
+## -- Specifies the username used for SSH login (Harvester VMs).
+ssh_username = "opensuse"
 
 ## -- Specifies the password used for SSH login.
 ssh_password = "SecretPassword.123"
@@ -26,7 +26,7 @@ network_name = ""
 image_namespace = "default"
 
 ## -- Specifies the OS image name.
-image_name = "ubuntu22"
+image_name = "opensuse-leap-15-6"
 
 ## -- Specifies the size of the root disk attached to each VM, in GB.
 os_disk_size = 25

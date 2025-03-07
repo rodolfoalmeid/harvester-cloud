@@ -11,7 +11,7 @@ variable "do_token" {
 }
 
 variable "os_image_id" {
-  description = "Specifies the custom OpenSUSE image uploaded to the DigitalOcean account. Default is 'null'."
+  description = "Specifies the custom openSUSE image uploaded to the DigitalOcean account. Default is 'null'."
   type        = string
   default     = null
 }

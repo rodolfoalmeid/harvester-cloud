@@ -1,5 +1,5 @@
 variable "ssh_username" {
-  description = "Specifies the username used for SSH authentication. Default is 'sles'."
+  description = "Specifies the username used for SSH authentication (Harvester nodes). Default is 'sles'."
   type        = string
   default     = "sles"
 }

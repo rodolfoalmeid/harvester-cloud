@@ -52,7 +52,7 @@ VM in the cloud > (libvirt) Virtual Network *vlan2* > (libvirt) Attach network i
 Obviously destroying the cluster solves the problem, but if you just want to roll back the configurations you made, run the script below:
 
 ```console
-$ ssh -oStrictHostKeyChecking=no -i <PREFIX>-ssh_private_key.pem sles@<PUBLIC_IPV4>
+$ ssh -oStrictHostKeyChecking=no -i <PREFIX>-ssh_private_key.pem <SSH_USERNAME>@<PUBLIC_IPV4>
 $ sudo su -
 $ cat << 'EOF' > detach-network-interface.sh
 #!/bin/bash

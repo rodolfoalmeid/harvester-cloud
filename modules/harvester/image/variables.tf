@@ -5,9 +5,9 @@ variable "create_image" {
 }
 
 variable "image_name" {
-  description = "Specifies the name of the Harvester image to be created. Default is 'ubuntu22'."
+  description = "Specifies the name of the Harvester image to be created. Default is 'opensuse-leap-15-6'."
   type        = string
-  default     = "ubuntu22"
+  default     = "opensuse-leap-15-6"
 }
 
 variable "image_namespace" {
@@ -23,7 +23,7 @@ variable "image_source_type" {
 }
 
 variable "image_url" {
-  description = "Specifies the URL used to download the Harvester image. Default is 'https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img'."
+  description = "Specifies the URL used to download the Harvester image. Default is 'https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2'."
   type        = string
-  default     = "https://cloud-images.ubuntu.com/releases/22.04/release/ubuntu-22.04-server-cloudimg-amd64.img"
+  default     = "https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2"
 }
