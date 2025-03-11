@@ -23,16 +23,16 @@ The following information provides an infrastructure cost estimation for deployi
 
 Please note that all estimated costs shown are generic approximations that have been rounded up and may not be 100% accurate, as the total price will vary depending on each specific scenario and Azure subscription.
 
-| Type   | Region      |  Mode   |  Disks | Disk Type         |  Disk Size | Required Instance | Estimated Cost per Month ($) |
-|--------|-------------|---------|--------|-------------------|------------|-------------------|------------------------------|
-| Small  | Europe West | Spot    | 1      | STANDARD SSD LRS  | 350 GB     | Standard_D16_v5   | 200                          |
-| Small  | Europe West | Spot    | 3      | STANDARD SSD LRS  | 350 GB     | Standard_D32_v5   | 350                          |
-| Small  | Europe West | Regular | 1      | STANDARD SSD LRS  | 350 GB     | Standard_D16_v5   | 750                          |
-| Small  | Europe West | Regular | 3      | STANDARD SSD LRS  | 350 GB     | Standard_D32_v5   | 1500                         |
-| Medium | Europe West | Spot    | 1      | STANDARD SSD LRS  | 350 GB     | Standard_D32_v5   | 300                          |
-| Medium | Europe West | Spot    | 3      | STANDARD SSD LRS  | 350 GB     | Standard_D64_v5   | 550                          |
-| Medium | Europe West | Regular | 1      | STANDARD SSD LRS  | 350 GB     | Standard_D32_v5   | 1350                         |
-| Medium | Europe West | Regular | 3      | STANDARD SSD LRS  | 350 GB     | Standard_D64_v5   | 2800                         |
+| Type   | Region      |  Mode   |  Disks | Disk Type    |  Disk Size | Required Instance | Estimated Cost per Month ($) |
+|--------|-------------|---------|--------|--------------|------------|-------------------|------------------------------|
+| Small  | Europe West | Spot    | 1      | PREMIUM LRS  | 350 GB     | Standard_D16s_v5  | 250                          |
+| Small  | Europe West | Spot    | 3      | PREMIUM LRS  | 350 GB     | Standard_D32s_v5  | 500                          |
+| Small  | Europe West | Regular | 1      | PREMIUM LRS  | 350 GB     | Standard_D16s_v5  | 800                          |
+| Small  | Europe West | Regular | 3      | PREMIUM LRS  | 350 GB     | Standard_D32s_v5  | 1650                         |
+| Medium | Europe West | Spot    | 1      | PREMIUM LRS  | 350 GB     | Standard_D32s_v5  | 350                          |
+| Medium | Europe West | Spot    | 3      | PREMIUM LRS  | 350 GB     | Standard_D64s_v5  | 700                          |
+| Medium | Europe West | Regular | 1      | PREMIUM LRS  | 350 GB     | Standard_D32s_v5  | 1500                         |
+| Medium | Europe West | Regular | 3      | PREMIUM LRS  | 350 GB     | Standard_D64s_v5  | 2850                         |
 
 The calculations were done using the *[Microsoft Azure pricing calculator](https://azure.microsoft.com/en-us/pricing/calculator/?service=spot-advisor)*.
 
