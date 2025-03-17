@@ -121,7 +121,7 @@ variable "os_disk_size" {
 }
 
 variable "instance_type" {
-  description = "Specifies the name of an Azure Virtual Machine type. Default is 'SStandard_D16s_v5'."
+  description = "Specifies the name of an Azure Virtual Machine type. Default is 'Standard_D16s_v5'."
   type        = string
   default     = "Standard_D16s_v5"
 }
