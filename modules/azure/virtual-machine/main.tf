@@ -160,7 +160,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
 }
 
 resource "azurerm_managed_disk" "data_disk" {
-  depends_on           = [azurerm_linux_virtual_machine.vm]
   count                = var.data_disk_count
   name                 = "${var.prefix}-data-disk-${count.index + 1}-${random_string.random.result}"
   location             = azurerm_resource_group.rg.location
