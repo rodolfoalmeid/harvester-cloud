@@ -1,6 +1,6 @@
 # How to create resources
 
-- Copy `./terraform.tfvars.exmaple` to `./terraform.tfvars`
+- Copy `./terraform.tfvars.example` to `./terraform.tfvars`
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)

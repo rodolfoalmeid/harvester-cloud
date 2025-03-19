@@ -1,6 +1,6 @@
 # How to create resources
 
-- Copy `./terraform.tfvars.exmaple` to `./terraform.tfvars`
+- Copy `./terraform.tfvars.example` to `./terraform.tfvars`
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `harvester_url` to specify the URL of the Harvester cluster API
