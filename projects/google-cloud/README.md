@@ -8,7 +8,7 @@
     - `region` to specify the Google region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
 - Make sure you are logged into your Google Account from your local Terminal. See the preparatory steps [here](../../modules/google-cloud/README.md).
-- If you need to change the size of your VM, make sure you choose those with an Intel processor. `libvirt` works very well on this processor family.
+- If you need to change the size of your VM, make sure you choose those with an [Intel processor](https://cloud.google.com/compute/docs/instances/nested-virtualization/overview). `libvirt` works very well on this processor family.
 
 #### Terraform Apply
 
