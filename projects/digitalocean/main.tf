@@ -13,6 +13,7 @@ locals {
   join_cloud_config_file                 = "${path.cwd}/join_cloud_config.yaml"
   harvester_startup_script_template_file = "../../modules/harvester/deployment-script/harvester_startup_script_sh.tpl"
   harvester_startup_script_file          = "${path.cwd}/harvester_startup_script.sh"
+  data_disk_size                         = var.data_disk_size * 0.9
   harvester_cpu                          = var.harvester_cluster_size == "small" ? 8 : 16
   harvester_memory                       = var.harvester_cluster_size == "small" ? 32768 : 65536
   create_ssh_key_pair                    = var.create_ssh_key_pair == true ? false : true
@@ -73,12 +74,13 @@ resource "local_file" "join_cloud_config_yaml" {
 
 resource "local_file" "harvester_startup_script" {
   content = templatefile("${local.harvester_startup_script_template_file}", {
-    hostname  = var.prefix
-    public_ip = module.harvester_node.instances_public_ip[0]
-    count     = var.harvester_node_count
-    cpu       = local.harvester_cpu
-    memory    = local.harvester_memory
-    password  = var.harvester_password
+    hostname                    = var.prefix
+    public_ip                   = module.harvester_node.instances_public_ip[0]
+    count                       = var.harvester_node_count
+    cpu                         = local.harvester_cpu
+    memory                      = local.harvester_memory
+    password                    = var.harvester_password
+    harvester_default_disk_size = local.data_disk_size
   })
   file_permission = "0644"
   filename        = local.harvester_startup_script_file
