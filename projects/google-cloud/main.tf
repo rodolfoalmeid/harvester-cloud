@@ -34,10 +34,10 @@ locals {
 
 resource "local_file" "sles_startup_script_config" {
   content = templatefile("${local.sles_startup_script_template_file}", {
-    version        = var.harvester_version,
-    count          = var.harvester_node_count,
-    disk_name      = local.data_disk_name,
-    mount_point    = local.data_disk_mount_point,
+    version        = var.harvester_version
+    count          = var.harvester_node_count * var.data_disk_count
+    disk_name      = local.data_disk_name
+    mount_point    = local.data_disk_mount_point
     disk_structure = local.disk_structure
   })
   file_permission = "0644"
@@ -60,9 +60,9 @@ resource "local_file" "default_ipxe_script_config" {
 
 resource "local_file" "create_cloud_config_yaml" {
   content = templatefile("${local.create_cloud_config_template_file}", {
-    version                  = var.harvester_version,
-    token                    = var.harvester_first_node_token,
-    hostname                 = var.prefix,
+    version                  = var.harvester_version
+    token                    = var.harvester_first_node_token
+    hostname                 = var.prefix
     password                 = var.harvester_password
     cluster_registration_url = var.rancher_api_url != "" ? rancher2_cluster.rancher_cluster[0].cluster_registration_token[0].manifest_url : ""
   })
@@ -72,9 +72,9 @@ resource "local_file" "create_cloud_config_yaml" {
 
 resource "local_file" "join_cloud_config_yaml" {
   content = templatefile("${local.join_cloud_config_template_file}", {
-    version  = var.harvester_version,
-    token    = var.harvester_first_node_token,
-    hostname = var.prefix,
+    version  = var.harvester_version
+    token    = var.harvester_first_node_token
+    hostname = var.prefix
     password = var.harvester_password
   })
   file_permission = "0644"
@@ -86,6 +86,8 @@ resource "local_file" "harvester_startup_script" {
     hostname                    = var.prefix
     public_ip                   = module.harvester_node.instances_public_ip[0]
     count                       = var.harvester_node_count
+    disk_structure              = local.disk_structure
+    data_disk_count             = var.data_disk_count
     cpu                         = local.harvester_cpu
     memory                      = local.harvester_memory
     password                    = var.harvester_password
@@ -112,7 +114,7 @@ module "harvester_node" {
   os_disk_type         = var.os_disk_type
   os_disk_size         = var.os_disk_size
   instance_type        = local.instance_type
-  data_disk_count      = var.harvester_node_count
+  data_disk_count      = var.harvester_node_count * var.data_disk_count
   data_disk_type       = var.data_disk_type
   data_disk_size       = var.data_disk_size
   startup_script       = data.local_file.sles_startup_script.content
