@@ -131,8 +131,8 @@ variable "data_disk_count" {
   type        = number
   default     = 1
   validation {
-    condition     = contains([1, 2, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1, 2, or 3."
+    condition     = contains([1, 2], var.data_disk_count)
+    error_message = "The number of data disks must be 1 or 2."
   }
 }
 

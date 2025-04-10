@@ -15,7 +15,8 @@ for i in $(seq 1 ${count}); do
   start_index="$(( (i - 1) * ${data_disk_count} + 1 ))"
   end_index="$(( i * ${data_disk_count} ))"
   for j in $(seq $start_index $end_index); do
-    disk_args+=" --disk path=/mnt/datadisk$j/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2"
+    unique_serial=$(uuidgen)
+    disk_args+=" --disk path=/mnt/datadisk$j/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2,serial=$unique_serial"
   done
   if [ $i == 1 ]; then
     sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/create_cloud_config.yaml
