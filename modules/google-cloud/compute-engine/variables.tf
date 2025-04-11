@@ -133,13 +133,13 @@ variable "data_disk_count" {
 }
 
 variable "data_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
+  description = "Specifies the type of the disks attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
   type        = string
   default     = "pd-ssd"
 }
 
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of the additional data disks for each VM instance, in GB. Default is '350'."
   type        = number
   default     = 350
 }

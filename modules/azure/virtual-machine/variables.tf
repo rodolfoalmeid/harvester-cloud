@@ -127,23 +127,19 @@ variable "instance_type" {
 }
 
 variable "data_disk_count" {
-  description = "Specifies the number of data disks to create (1 or 3). Default is '1'."
+  description = "Specifies the number of additional data disks to attach to each VM instance. Default is 1."
   type        = number
   default     = 1
-  validation {
-    condition     = contains([1, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1 or 3."
-  }
 }
 
 variable "data_disk_type" {
-  description = "Specifies the type of the disk attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS'). Default is 'Premium_LRS'."
+  description = "Specifies the type of the disks attached to each node ('Standard_LRS, 'StandardSSD_LRS', 'Premium_LRS' or 'UltraSSD_LRS'). Default is 'Premium_LRS'."
   type        = string
   default     = "Premium_LRS"
 }
 
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of the additional data disks for each VM instance, in GB. Default is '350'."
   type        = number
   default     = 350
 }
