@@ -63,7 +63,7 @@ if [ ${data_disk_count} -gt 1 ]; then
     for j in $(seq 1 $((${data_disk_count} - 1))); do
       # Create a new raw disk for each additional disk
       disk_path="/mnt/datadisk$disk_index/harvester-data.raw"
-      sudo qemu-img create -f raw "$disk_path" ${harvester_default_disk_size}
+      sudo qemu-img create -f raw "$disk_path" ${harvester_default_disk_size}G
 
       # Generate a unique WWN for each disk
       wwn="0x5000c50015$(date +%N | sha512sum | head -c 6)"
