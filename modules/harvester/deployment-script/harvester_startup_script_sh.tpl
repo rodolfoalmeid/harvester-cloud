@@ -11,27 +11,20 @@ sudo systemctl enable --now nginx
 
 # Creation of nested VMs, based on the number of data disks
 for i in $(seq 1 ${count}); do
-  disk_args=""
-  start_index="$(( (i - 1) * ${data_disk_count} + 1 ))"
-  end_index="$(( i * ${data_disk_count} ))"
-  for j in $(seq $start_index $end_index); do
-    unique_serial=$(uuidgen)
-    disk_args+=" --disk path=/mnt/datadisk$j/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2,serial=$unique_serial"
-  done
   if [ $i == 1 ]; then
     sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/create_cloud_config.yaml
-    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough $disk_args --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
+    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough --disk path=/mnt/datadisk$i/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2 --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
     sleep 30
   elif [ $i == 2 ]; then
     sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/join_cloud_config.yaml
     sudo sed -i "s/create_cloud_config.yaml/join_cloud_config.yaml/g" /srv/www/harvester/default.ipxe
-    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough $disk_args --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
+    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough --disk path=/mnt/datadisk$i/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2 --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
     sleep 30
   else
     sudo cp /srv/www/harvester/join_cloud_config.yaml /srv/www/harvester/join_cloud_config_$((i - 1)).yaml
     sudo sed -i "s/${hostname}-$((i - 1))/${hostname}-$i/g" /srv/www/harvester/join_cloud_config_$((i - 1)).yaml
     sudo sed -i "s/join_cloud_config.yaml/join_cloud_config_$((i - 1)).yaml/g" /srv/www/harvester/default.ipxe
-    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough $disk_args --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
+    sudo virt-install --name harvester-node-$i --memory ${memory} --vcpus ${cpu} --cpu host-passthrough --disk path=/mnt/datadisk$i/harvester-data.qcow2,size=${harvester_default_disk_size},bus=virtio,format=qcow2 --os-type linux --os-variant generic --network bridge=virbr1,model=virtio --graphics vnc,listen=0.0.0.0,password=yourpass,port=$((5900 + i)) --console pty,target_type=serial --pxe --autostart &
     sleep 30
   fi
 done
@@ -63,11 +56,34 @@ done
 sudo sshpass -p "${password}" ssh -oStrictHostKeyChecking=no "rancher@192.168.122.120" "sudo cat /etc/rancher/rke2/rke2.yaml" > /tmp/rke2.yaml
 sudo sed -i "/certificate-authority-data:/c\\    insecure-skip-tls-verify: true" /tmp/rke2.yaml
 
-# Adding GPT partition table to the additional disks
-for ip in $(sudo virsh net-dhcp-leases vlan1 | grep ${hostname} | awk '{print $5}' | awk -F "/" '{print $1}'); do
-  for i in $(seq 1 $((${data_disk_count} - 1))); do
-    disk_letter=$(printf "\x$(printf %x $((${disk_structure} + i)))")
-    sudo sshpass -p "${password}" ssh -oStrictHostKeyChecking=no "rancher@$ip" \
-      "sudo parted /dev/vd$disk_letter --script mklabel gpt && sudo parted /dev/vd$disk_letter --script mkpart primary 0% 100%"
+# Creating additional disks if data_disk_count > 1
+if [ ${data_disk_count} -gt 1 ]; then
+  disk_index=$(( ${count} + 1 ))  # Start indexing additional disks after the default disk
+  for i in $(seq 1 ${count}); do
+    for j in $(seq 1 $((${data_disk_count} - 1))); do
+      # Create a new raw disk for each additional disk
+      disk_path="/mnt/datadisk$disk_index/harvester-data.raw"
+      sudo qemu-img create -f raw "$disk_path" ${harvester_default_disk_size}
+
+      # Generate a unique WWN for each disk
+      wwn="0x5000c50015$(date +%N | sha512sum | head -c 6)"
+      target_letter=$(echo $((disk_index + 1)) | awk '{printf "%c", 96 + $1}')
+      target_dev="sd$target_letter"
+
+      # Generate XML to attach the disk with unique WWN
+      xml_file="/tmp/disk-$i-$j.xml"
+      cat > "$xml_file" <<EOF
+<disk type='file' device='disk'>
+  <driver name='qemu' type='raw'/>
+  <source file='$disk_path'/>
+  <target dev='$target_dev' bus='scsi'/>
+  <wwn>$wwn</wwn>
+</disk>
+EOF
+
+      # Attach the disk to the VM live
+      sudo virsh attach-device harvester-node-$i --file "$xml_file" --live
+      disk_index=$((disk_index + 1))
+    done
   done
-done
+fi
