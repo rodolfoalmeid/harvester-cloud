@@ -127,12 +127,12 @@ variable "os_disk_size" {
 }
 
 variable "data_disk_count" {
-  description = "Specifies the number of additional data disks to attach to each VM instance. Default is 1."
+  description = "Specifies the number of additional data disks to attach to each VM instance. Must be at least 1."
   type        = number
   default     = 1
   validation {
-    condition     = contains([1, 2, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1 or 2."
+    condition     = var.data_disk_count >= 1
+    error_message = "The number of data disks must be greater than or equal to 1."
   }
 }
 
