@@ -219,7 +219,7 @@ http {
 }
 ```
 
-3. Creation of nested VMs, based on the number of data disks
+3. Creation of nested VMs
 
 ```console
 for i in $(seq 1 ${count}); do
@@ -473,6 +473,41 @@ done
 ```console
 sudo sshpass -p "${password}" ssh -oStrictHostKeyChecking=no "rancher@192.168.122.120" "sudo cat /etc/rancher/rke2/rke2.yaml" > /tmp/rke2.yaml
 sudo sed -i "/certificate-authority-data:/c\\    insecure-skip-tls-verify: true" /tmp/rke2.yaml
+```
+
+8. Creating additional disks if `data_disk_count` variable is > 1
+
+```console
+if [ ${data_disk_count} -gt 1 ]; then
+  disk_index=$(( ${count} + 1 ))  # Start indexing additional disks after the default disk
+  for i in $(seq 1 ${count}); do
+    for j in $(seq 1 $((${data_disk_count} - 1))); do
+      # Create a new raw disk for each additional disk
+      disk_path="/mnt/datadisk$disk_index/harvester-data.raw"
+      sudo qemu-img create -f raw "$disk_path" ${harvester_default_disk_size}G
+
+      # Generate a unique WWN for each disk
+      wwn="0x5000c50015$(date +%N | sha512sum | head -c 6)"
+      target_letter=$(echo $((disk_index + 1)) | awk '{printf "%c", 96 + $1}')
+      target_dev="sd$target_letter"
+
+      # Generate XML to attach the disk with unique WWN
+      xml_file="/tmp/disk-$i-$j.xml"
+      cat > "$xml_file" <<EOF
+<disk type='file' device='disk'>
+  <driver name='qemu' type='raw'/>
+  <source file='$disk_path'/>
+  <target dev='$target_dev' bus='scsi'/>
+  <wwn>$wwn</wwn>
+</disk>
+EOF
+
+      # Attach the disk to the VM live
+      sudo virsh attach-device harvester-node-$i --file "$xml_file" --live
+      disk_index=$((disk_index + 1))
+    done
+  done
+fi
 ```
 
 ### 3_ Rancher integration

@@ -9,7 +9,7 @@ sudo virsh net-autostart vlan1
 sudo chown nobody:nobody -R /srv/www
 sudo systemctl enable --now nginx
 
-# Creation of nested VMs, based on the number of data disks
+# Creation of nested VMs
 for i in $(seq 1 ${count}); do
   if [ $i == 1 ]; then
     sudo sed -i "s/${hostname}/${hostname}-$i/g" /srv/www/harvester/create_cloud_config.yaml
@@ -56,7 +56,7 @@ done
 sudo sshpass -p "${password}" ssh -oStrictHostKeyChecking=no "rancher@192.168.122.120" "sudo cat /etc/rancher/rke2/rke2.yaml" > /tmp/rke2.yaml
 sudo sed -i "/certificate-authority-data:/c\\    insecure-skip-tls-verify: true" /tmp/rke2.yaml
 
-# Creating additional disks if data_disk_count > 1
+# Creating additional disks if `data_disk_count` variable is > 1
 if [ ${data_disk_count} -gt 1 ]; then
   disk_index=$(( ${count} + 1 ))  # Start indexing additional disks after the default disk
   for i in $(seq 1 ${count}); do
