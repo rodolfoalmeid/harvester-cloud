@@ -138,3 +138,27 @@ rancher_insecure     = true
 ![](../../images/DO_PROJ_README_12.png)
 
 **PS: The Rancher cluster was created on an RKE2 Kubernetes cluster on Google Cloud infrastructure. To replicate the scenario, you can take a look [here](https://github.com/rancher/tf-rancher-up/tree/main/recipes/upstream/google-cloud/rke2).**
+
+# DEMOSTRATION 3 - Cluster Harvester with 3 additional data disks per instance
+
+#### Configure the terraform.tfvars file with the minimum necessary configurations
+
+```console
+$ cat terraform.tfvars
+prefix               = "glovecchio"
+do_token             = "<DIGITALOCEAN_TOKEN>"
+os_image_id          = "180949249"
+region               = "fra1"
+harvester_node_count = 3
+data_disk_count      = 4
+```
+
+**1 is the minimum accepted value, because it is the default disk needed for the Harvester host to function, so to have 3 more disks, the value will have to be 4.**
+
+#### Harvester UI - Add Disks to Harvester Hosts (example for node 1)
+
+![](../../images/DO_PROJ_README_13.png)
+![](../../images/DO_PROJ_README_14.png)
+![](../../images/DO_PROJ_README_15.png)
+![](../../images/DO_PROJ_README_16.png)
+![](../../images/DO_PROJ_README_17.png)

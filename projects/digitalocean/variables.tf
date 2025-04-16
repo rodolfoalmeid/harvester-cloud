@@ -64,17 +64,17 @@ variable "instance_type" {
 }
 
 variable "data_disk_count" {
-  description = "Specifies the number of additional data disks to create (1 or 3). Default is '1'."
+  description = "Specifies the number of additional data disks to attach to each VM instance. Must be at least 1."
   type        = number
   default     = 1
   validation {
-    condition     = contains([1, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1 or 3."
+    condition     = var.data_disk_count >= 1
+    error_message = "The number of data disks must be greater than or equal to 1."
   }
 }
 
 variable "data_disk_size" {
-  description = "Specifies the size of each additional data disk attached to the Droplet, in GB. Default is '350'."
+  description = "Specifies the size of each additional data disks attached to the Droplet, in GB. Default is '350'."
   type        = number
   default     = 350
 }

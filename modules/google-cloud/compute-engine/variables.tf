@@ -127,23 +127,19 @@ variable "instance_type" {
 }
 
 variable "data_disk_count" {
-  description = "Specifies the number of data disks to create (1 or 3). Default is '1'."
+  description = "Specifies the number of additional data disks to attach to each VM instance. Default is 1."
   type        = number
   default     = 1
-  validation {
-    condition     = contains([1, 3], var.data_disk_count)
-    error_message = "The number of data disks must be 1 or 3."
-  }
 }
 
 variable "data_disk_type" {
-  description = "Specifies the type of the disk attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
+  description = "Specifies the type of the disks attached to each node (e.g., 'pd-standard', 'pd-ssd', or 'pd-balanced'). Default is 'pd-ssd'."
   type        = string
   default     = "pd-ssd"
 }
 
 variable "data_disk_size" {
-  description = "Specifies the size of the additional data disk for each VM instance, in GB. Default is '350'."
+  description = "Specifies the size of the additional data disks for each VM instance, in GB. Default is '350'."
   type        = number
   default     = 350
 }
