@@ -2,7 +2,7 @@
 
 The deployment does not require manual activities, with the exception of the configuration of four or five variables necessary for the Cloud Provider setup (subscription ID, Region, etc.).
 
-The following [diagram](../images/HIGH_LEVEL_DEPLOYMENT_SCHEMA.png) provides a high-level overview of the deployment process to help you understand the Terraform workflow
+The following [diagram](../images/HIGH_LEVEL_DEPLOYMENT_SCHEMA.png) provides a high-level overview of the deployment process to help you understand the Terraform workflow.
 
 However, it is interesting to know what happens behind the scenes.
 
