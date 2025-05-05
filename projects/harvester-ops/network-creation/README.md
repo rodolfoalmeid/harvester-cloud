@@ -8,6 +8,7 @@
     - `kubeconfig_file_name` to specify the name of the Kubeconfig file used to access the Harvester cluster
     - `private_ssh_key_file_path` to specify the full path where the private SSH key file is located
     - `private_ssh_key_file_name` to specify the name of the private SSH key file used for authentication
+    - `cluster_network_count` to specify the number of NIC's to be created on Harvester Nested VM's. The first NIC created on each Harvester node will be configured as VM network on Harvester while the rest of NIC's will remain available to be configured manually.
 
 #### Terraform Apply
 
@@ -57,16 +58,19 @@ $ sudo su -
 $ cat << 'EOF' > detach-network-interface.sh
 #!/bin/bash
 
-CLUSTER_NETWORK_VLAN_NIC="virbr2" # Default value
-NETWORK_NAME="vlan2" # Default value
+CLUSTER_NETWORK_VLAN_NIC="virbr" # Default value
+NETWORK_NAME="vlan" # Default value
 NODE_COUNT=$(sudo virsh list --all | grep -c "running")
+NETWORK_COUNT=$(virsh net-list --all | awk '$2 == "active" && $1 != "vlan1" {print $1}' | wc -l)
 
 for i in $(seq 1 $NODE_COUNT); do
-  MAC_ADDRESS=$(sudo virsh domiflist harvester-node-$i | grep $CLUSTER_NETWORK_VLAN_NIC | awk '{print $5}')
-  if [ -n "$MAC_ADDRESS" ]; then
-    echo "Detaching interface with MAC $MAC_ADDRESS from harvester-node-$i."
-    sudo virsh detach-interface --domain harvester-node-$i --type bridge --mac $MAC_ADDRESS --config --live
-  fi
+  for j in $(seq 1 $NETWORK_COUNT);do
+    MAC_ADDRESS=$(sudo virsh domiflist harvester-node-$i | grep $CLUSTER_NETWORK_VLAN_NIC$(($j + 1 )) | awk '{print $5}')
+    if [ -n "$MAC_ADDRESS" ]; then
+      echo "Detaching interface with MAC $MAC_ADDRESS from harvester-node-$i."
+      sudo virsh detach-interface --domain harvester-node-$i --type bridge --mac $MAC_ADDRESS --config --live
+    fi
+  done
 done
 
 for i in $(seq 1 $NODE_COUNT); do
@@ -87,9 +91,11 @@ for i in $(seq 1 $NODE_COUNT); do
   echo "harvester-node-$i is back online."
 done
 
-echo "Destroying and undefining the network $NETWORK_NAME"
-sudo virsh net-destroy --network $NETWORK_NAME || true
-sudo virsh net-undefine --network $NETWORK_NAME || true
+for i in $(seq 1 $NETWORK_COUNT); do
+  echo "Destroying and undefining the network $NETWORK_NAME$(($i + 1))"
+  sudo virsh net-destroy --network $NETWORK_NAME$(($i + 1)) || true
+  sudo virsh net-undefine --network $NETWORK_NAME$(($i + 1)) || true
+done
 
 ATTEMPS=0
 HARVESTER_URL="<HARVESTER_URL>" # Example https://<PREFIX>.<PUBLIC_IP4>.sslip.io
@@ -108,7 +114,7 @@ EOF
 $ chmod +x ./detach-network-interface.sh
 $ sh ./detach-network-interface.sh
 ```
-**Remember to initialize the `CLUSTER_NETWORK_VLAN_NIC`, `NETWORK_NAME`, and `HARVESTER_URL` variables.**
+**Remember to initialize `HARVESTER_URL` variable.**
 
 **This script will perform a rolling reboot of the Harvester nodes.**
 
@@ -125,11 +131,13 @@ $ sh ./detach-network-interface.sh
 
 ```console
 $ cat terraform.tfvars
-harvester_url             = "https://glovecchio.34.154.151.215.sslip.io"
-kubeconfig_file_path      = "../../google-cloud/"
-kubeconfig_file_name      = "glovecchio_kube_config.yml"
-private_ssh_key_file_path = "../../google-cloud/"
-private_ssh_key_file_name = "glovecchio-ssh_private_key.pem"
+harvester_url             = "https://jlagos-harvester.164.92.183.84.sslip.io"
+kubeconfig_file_path      = "../../digitalocean/"
+kubeconfig_file_name      = "jlagos-harvester_kube_config.yml"
+private_ssh_key_file_name = "jlagos-harvester-ssh_private_key.pem"
+private_ssh_key_file_path = "../../digitalocean/"
+ssh_username = "opensuse"
+cluster_network_count = 3
 ```
 
 #### Demonstration of applying Terraform files
@@ -144,32 +152,41 @@ private_ssh_key_file_name = "glovecchio-ssh_private_key.pem"
 ![](../../../images/HARV_OPS_PROJ_README_9.png)
 ![](../../../images/HARV_OPS_PROJ_README_10.png)
 ![](../../../images/HARV_OPS_PROJ_README_11.png)
-
-#### Check on the VM
-
 ![](../../../images/HARV_OPS_PROJ_README_12.png)
-
-#### Demonstration of Terraform destroy
-
 ![](../../../images/HARV_OPS_PROJ_README_13.png)
 ![](../../../images/HARV_OPS_PROJ_README_14.png)
 
-#### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - POST-DESTROY
+#### Check on the VM
 
 ![](../../../images/HARV_OPS_PROJ_README_15.png)
+
+#### Demonstration of Terraform destroy
+
 ![](../../../images/HARV_OPS_PROJ_README_16.png)
-
-#### Deletion of the Virtual Network and detachment of the NIC from the nested VMs
-
-1. Copy the above script and initialize the variables `CLUSTER_NETWORK_VLAN_NIC`, `NETWORK_NAME`, and `HARVESTER_URL`
-
 ![](../../../images/HARV_OPS_PROJ_README_17.png)
 
-2. Run the script
+
+#### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - POST-DESTROY
 
 ![](../../../images/HARV_OPS_PROJ_README_18.png)
 ![](../../../images/HARV_OPS_PROJ_README_19.png)
 
-3. Double checks
+#### Deletion of the Virtual Network and detachment of the NIC from the nested VMs
+
+1. Copy the above script and initialize the variables `HARVESTER_URL`
 
 ![](../../../images/HARV_OPS_PROJ_README_20.png)
+
+2. Run the script
+
+![](../../../images/HARV_OPS_PROJ_README_39.png)
+![](../../../images/HARV_OPS_PROJ_README_40.png)
+![](../../../images/HARV_OPS_PROJ_README_41.png)
+
+
+
+
+3. Double checks
+
+![](../../../images/HARV_OPS_PROJ_README_42.png)
+

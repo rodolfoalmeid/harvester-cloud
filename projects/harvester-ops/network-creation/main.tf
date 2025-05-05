@@ -1,23 +1,32 @@
 locals {
   harvester_public_ip              = replace(replace(var.harvester_url, "https://", ""), "/$", "")
   qemu_vlanx_xml_template_file     = "../../../modules/harvester/deployment-script/qemu_vlanx_xml.tpl"
-  qemu_vlanx_xml_file              = "${path.cwd}/vlanx.xml"
-  vlanx_ip_base                    = "192.168.123" # address=192.168.123.1 netmask=255.255.255.0 start=192.168.123.2 end=192.168.123.254
+  nic_base                         = "virbr"
+  ip_base                          = "192.168."
+  vlan_base                        = "vlan"
+  vlanx_network_map = zipmap(
+    [for i in range(var.cluster_network_count) : i + 1],
+    [for i in range(var.cluster_network_count) : {
+      nic     = "${local.nic_base}${2 + i}"
+      ip_base = "${local.ip_base}${123 + i}"
+    }])
   harvester_network_interface_name = ["ens7"]      # Name of the NIC that is automatically created in Harvester nested VMs
   kubeconfig_file                  = "${var.kubeconfig_file_path}/${var.kubeconfig_file_name}"
 }
 
 resource "local_file" "qemu_vlanx_config" {
+  for_each = local.vlanx_network_map
   content = templatefile("${local.qemu_vlanx_xml_template_file}", {
-    name    = var.network_name,
-    nic     = join(",", var.cluster_network_vlan_nics),
-    ip_base = local.vlanx_ip_base
+    name    = "${local.vlan_base}${each.key + 1}",
+    nic     = each.value.nic,
+    ip_base = each.value.ip_base
   })
   file_permission = "0644"
-  filename        = local.qemu_vlanx_xml_file
+  filename        = "${path.cwd}/vlanx-${each.key}.xml"
 }
 
 resource "null_resource" "copy_qemu_vlanx_xml_file_to_first_node" {
+  for_each = local.vlanx_network_map
   depends_on = [local_file.qemu_vlanx_config]
   connection {
     type        = "ssh"
@@ -26,20 +35,21 @@ resource "null_resource" "copy_qemu_vlanx_xml_file_to_first_node" {
     private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   }
   provisioner "file" {
-    source      = local_file.qemu_vlanx_config.filename
-    destination = "/tmp/${basename(local_file.qemu_vlanx_config.filename)}"
+    source      = local_file.qemu_vlanx_config[each.key].filename
+    destination = "/tmp/${basename(local_file.qemu_vlanx_config[each.key].filename)}"
   }
 }
 
 resource "ssh_resource" "create_vlanx" {
+  for_each    = local.vlanx_network_map
   depends_on  = [null_resource.copy_qemu_vlanx_xml_file_to_first_node]
   host        = local.harvester_public_ip
   user        = var.ssh_username
   private_key = file("${var.private_ssh_key_file_path}/${var.private_ssh_key_file_name}")
   commands = [
-    "sudo virsh net-define /tmp/${basename(local.qemu_vlanx_xml_file)} || true",
-    "sudo virsh net-start ${var.network_name} || true",
-    "sudo virsh net-autostart ${var.network_name} || true"
+    "sudo virsh net-define /tmp/${basename(local_file.qemu_vlanx_config[each.key].filename)} || true",
+    "sudo virsh net-start ${local.vlan_base}${each.key + 1} || true",
+    "sudo virsh net-autostart ${local.vlan_base}${each.key + 1} || true"
   ]
 }
 
@@ -52,7 +62,9 @@ resource "ssh_resource" "attach_network_interface" {
     <<-EOT
       NODE_COUNT=$(sudo virsh list --all | grep -c "running")
       for i in $(seq 1 $NODE_COUNT); do
-        sudo virsh attach-interface --domain harvester-node-$i --type bridge --source ${join(",", var.cluster_network_vlan_nics)} --model virtio --config --live || true
+          for j in $(seq 1 ${var.cluster_network_count}); do
+           sudo virsh attach-interface --domain harvester-node-$i --type bridge --source ${local.nic_base}$(($j + 1)) --model virtio --config --live || true
+          done
       done
       for i in $(seq 1 $NODE_COUNT); do
         sudo virsh reboot harvester-node-$i
