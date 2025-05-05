@@ -1,16 +1,16 @@
 locals {
-  harvester_public_ip              = replace(replace(var.harvester_url, "https://", ""), "/$", "")
-  qemu_vlanx_xml_template_file     = "../../../modules/harvester/deployment-script/qemu_vlanx_xml.tpl"
-  nic_base                         = "virbr"
-  ip_base                          = "192.168."
-  vlan_base                        = "vlan"
+  harvester_public_ip          = replace(replace(var.harvester_url, "https://", ""), "/$", "")
+  qemu_vlanx_xml_template_file = "../../../modules/harvester/deployment-script/qemu_vlanx_xml.tpl"
+  nic_base                     = "virbr"
+  ip_base                      = "192.168."
+  vlan_base                    = "vlan"
   vlanx_network_map = zipmap(
     [for i in range(var.cluster_network_count) : i + 1],
     [for i in range(var.cluster_network_count) : {
       nic     = "${local.nic_base}${2 + i}"
       ip_base = "${local.ip_base}${123 + i}"
-    }])
-  harvester_network_interface_name = ["ens7"]      # Name of the NIC that is automatically created in Harvester nested VMs
+  }])
+  harvester_network_interface_name = ["ens7"] # Name of the NIC that is automatically created in Harvester nested VMs
   kubeconfig_file                  = "${var.kubeconfig_file_path}/${var.kubeconfig_file_name}"
 }
 
@@ -26,7 +26,7 @@ resource "local_file" "qemu_vlanx_config" {
 }
 
 resource "null_resource" "copy_qemu_vlanx_xml_file_to_first_node" {
-  for_each = local.vlanx_network_map
+  for_each   = local.vlanx_network_map
   depends_on = [local_file.qemu_vlanx_config]
   connection {
     type        = "ssh"
