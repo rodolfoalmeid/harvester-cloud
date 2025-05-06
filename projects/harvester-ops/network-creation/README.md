@@ -118,7 +118,43 @@ $ sh ./detach-network-interface.sh
 
 **This script will perform a rolling reboot of the Harvester nodes.**
 
-# DEMOSTRATION - Given a Harvester cluster, create a VM Network with all related resources
+# DEMOSTRATION - Given a Harvester cluster, create one VM Network with all related resources
+
+![](../../../images/HARV_OPS_PROJ_README_43.png)
+![](../../../images/HARV_OPS_PROJ_README_44.png)
+![](../../../images/HARV_OPS_PROJ_README_45.png)
+![](../../../images/HARV_OPS_PROJ_README_46.png)
+
+#### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - PRE-DEPLOY
+
+```console
+$ cat terraform.tfvars
+harvester_url             = "https://jlagos-harvester.206.81.19.253.sslip.io"
+kubeconfig_file_path      = "../../digitalocean/"
+kubeconfig_file_name      = "jlagos-harvester_kube_config.yml"
+private_ssh_key_file_name = "jlagos-harvester-ssh_private_key.pem"
+private_ssh_key_file_path = "../../digitalocean/"
+ssh_username = "opensuse"
+```
+
+#### Demonstration of applying Terraform files
+
+![](../../../images/HARV_OPS_PROJ_README_47.png)
+![](../../../images/HARV_OPS_PROJ_README_48.png)
+
+#### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - POST-DEPLOY
+
+![](../../../images/HARV_OPS_PROJ_README_49.png)
+![](../../../images/HARV_OPS_PROJ_README_50.png)
+![](../../../images/HARV_OPS_PROJ_README_51.png)
+![](../../../images/HARV_OPS_PROJ_README_52.png)
+![](../../../images/HARV_OPS_PROJ_README_53.png)
+
+#### Check on the VM
+![](../../../images/HARV_OPS_PROJ_README_54.png)
+
+
+# DEMOSTRATION - Given a Harvester cluster, create one VM Network with all related resources while creating and keeping available 2 NICs on Nested Harvester VMs
 
 #### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - PRE-DEPLOY
 
@@ -171,7 +207,7 @@ cluster_network_count = 3
 ![](../../../images/HARV_OPS_PROJ_README_18.png)
 ![](../../../images/HARV_OPS_PROJ_README_19.png)
 
-#### Deletion of the Virtual Network and detachment of the NIC from the nested VMs
+#### Deletion of the Virtual Network and detachment of the NICs from the nested VMs
 
 1. Copy the above script and initialize the variables `HARVESTER_URL`
 
