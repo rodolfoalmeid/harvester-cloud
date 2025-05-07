@@ -118,7 +118,7 @@ $ sh ./detach-network-interface.sh
 
 **This script will perform a rolling reboot of the Harvester nodes.**
 
-# DEMOSTRATION - Given a Harvester cluster, create one VM Network with all related resources
+# DEMOSTRATION 1 - Given a Harvester cluster, create one VM Network with all related resources
 
 ![](../../../images/HARV_OPS_PROJ_README_43.png)
 ![](../../../images/HARV_OPS_PROJ_README_44.png)
@@ -134,7 +134,7 @@ kubeconfig_file_path      = "../../digitalocean/"
 kubeconfig_file_name      = "jlagos-harvester_kube_config.yml"
 private_ssh_key_file_name = "jlagos-harvester-ssh_private_key.pem"
 private_ssh_key_file_path = "../../digitalocean/"
-ssh_username = "opensuse"
+ssh_username              = "opensuse"
 ```
 
 #### Demonstration of applying Terraform files
@@ -154,7 +154,7 @@ ssh_username = "opensuse"
 ![](../../../images/HARV_OPS_PROJ_README_54.png)
 
 
-# DEMOSTRATION - Given a Harvester cluster, create one VM Network with all related resources while creating and keeping available 2 NICs on Nested Harvester VMs
+# DEMOSTRATION 2 - Given a Harvester cluster, create one VM Network with all related resources while creating and keeping available 2 NICs on Nested Harvester VMs
 
 #### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - PRE-DEPLOY
 
@@ -172,8 +172,8 @@ kubeconfig_file_path      = "../../digitalocean/"
 kubeconfig_file_name      = "jlagos-harvester_kube_config.yml"
 private_ssh_key_file_name = "jlagos-harvester-ssh_private_key.pem"
 private_ssh_key_file_path = "../../digitalocean/"
-ssh_username = "opensuse"
-cluster_network_count = 3
+ssh_username              = "opensuse"
+cluster_network_count     = 3
 ```
 
 #### Demonstration of applying Terraform files
@@ -201,7 +201,6 @@ cluster_network_count = 3
 ![](../../../images/HARV_OPS_PROJ_README_16.png)
 ![](../../../images/HARV_OPS_PROJ_README_17.png)
 
-
 #### Harvester Cluster - UI | Cluster Network | Virtual Machine Networks - POST-DESTROY
 
 ![](../../../images/HARV_OPS_PROJ_README_18.png)
@@ -219,10 +218,6 @@ cluster_network_count = 3
 ![](../../../images/HARV_OPS_PROJ_README_40.png)
 ![](../../../images/HARV_OPS_PROJ_README_41.png)
 
-
-
-
 3. Double checks
 
 ![](../../../images/HARV_OPS_PROJ_README_42.png)
-
