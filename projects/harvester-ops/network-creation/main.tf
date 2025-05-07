@@ -49,7 +49,9 @@ resource "ssh_resource" "create_vlanx" {
   commands = [
     "sudo virsh net-define /tmp/${basename(local_file.qemu_vlanx_config[each.key].filename)} || true",
     "sudo virsh net-start ${local.vlan_base}${each.key + 1} || true",
-    "sudo virsh net-autostart ${local.vlan_base}${each.key + 1} || true"
+    "sudo virsh net-autostart ${local.vlan_base}${each.key + 1} || true",
+    "sudo iptables -I LIBVIRT_FWI 1 -d 192.168.122.0/24 -j ACCEPT",
+    "sudo iptables -I LIBVIRT_FWO 1 -s 192.168.122.0/24 -j ACCEPT"
   ]
 }
 
