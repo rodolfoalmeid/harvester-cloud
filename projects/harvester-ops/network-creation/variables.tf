@@ -4,6 +4,12 @@ variable "ssh_username" {
   default     = "sles"
 }
 
+variable "cluster_network_count" {
+  description = "Specifies the number of networks to be created on Harvester Nested VM's. Default is '1'."
+  type        = number
+  default     = 1
+}
+
 variable "cluster_network_name" {
   description = "Specifies the name of the Harvester Cluster Network. Default is 'cluster-vlan'."
   type        = string

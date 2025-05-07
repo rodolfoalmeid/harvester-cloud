@@ -1,6 +1,9 @@
 ## -- Specifies the username used for SSH authentication (Harvester nodes).
 ssh_username = "sles"
 
+## -- Specifies the number of networks to be created on Harvester Nested VM's. Only the first one will be automatically configured as a VM Network on Harvester, while the rest will remain available on the nodes to be manually configured via the Harvester UI.
+cluster_network_count = 1
+
 ## -- Specifies the name of the Harvester Cluster Network.
 cluster_network_name = "cluster-vlan"
 

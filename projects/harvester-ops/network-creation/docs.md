@@ -34,6 +34,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_cluster_network_count"></a> [cluster\_network\_count](#input\_cluster\_network\_count) | Specifies the number of networks to be created on Harvester Nested VM's. Default is '1'. | `number` | `1` | no |
 | <a name="input_cluster_network_name"></a> [cluster\_network\_name](#input\_cluster\_network\_name) | Specifies the name of the Harvester Cluster Network. Default is 'cluster-vlan'. | `string` | `"cluster-vlan"` | no |
 | <a name="input_cluster_network_vlan_bond_mode"></a> [cluster\_network\_vlan\_bond\_mode](#input\_cluster\_network\_vlan\_bond\_mode) | Specifies the bond mode for the Harvester Cluster Network VLAN. Default is 'active-backup'. | `string` | `"active-backup"` | no |
 | <a name="input_cluster_network_vlan_nics"></a> [cluster\_network\_vlan\_nics](#input\_cluster\_network\_vlan\_nics) | Specifies the list of NICs used for the Harvester Cluster Network VLAN. Default is '["virbr2"]'. | `list(any)` | <pre>[<br>  "virbr2"<br>]</pre> | no |
