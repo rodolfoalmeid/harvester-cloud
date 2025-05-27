@@ -4,18 +4,13 @@
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
-    - `os_image_id` to specify the openSUSE image ID uploaded to your DigitalOcean account
     - `do_token` to specify the DigitalOcean API token used to create resources
+    - `os_image_name` to specify the OpenSUSE Leap image name uploaded to DO account.
     - `region` to specify the DigitalOcean region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
-- Make sure you are logged into your DigitalOcean account using the `doctl` utility. See the preparatory steps [here](../../modules/digitalocean/README.md).
 - Ensure that the openSUSE Leap image has been uploaded to your DigitalOcean organization. The recommended version for Terraform is openSUSE Leap 15.6. You can download it from [here](https://download.opensuse.org/distribution/leap/15.6/appliances/openSUSE-Leap-15.6-Minimal-VM.x86_64-Cloud.qcow2).  
   See the steps to upload the downloaded openSUSE image to DigitalOcean [here](https://docs.digitalocean.com/products/custom-images/how-to/upload/).
-- Update the variable `os_image_id` with the correct ID of the uploaded openSUSE Leap image. You can retrieve the image ID by running:
-
-```bash
-doctl compute image list-user | grep "<NAME>"
-```
+- Ensure you have generated a DigitalOcean token by following the steps described [here](../../modules/digitalocean/README.md)
 
 #### Terraform Apply
 
@@ -67,12 +62,9 @@ ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harves
 
 # DEMOSTRATION 1 - Cluster Harvester with minimal possible configuration ("small" size)
 
-#### Extract Image ID using doctl utility required for Terraform to run
+#### Retrieve OpenSUSE image name uploaded to DO account
 
-```console
-$ doctl compute image list-user | grep "openSUSE-Leap-15.6-Minimal"
-179519713    openSUSE-Leap-15.6-Minimal                            custom      Unknown OS              false     7
-```
+![](../../images/DO_PROJ_README_18.png)
 
 #### Configure the terraform.tfvars file with the minimum necessary configurations
 
@@ -80,7 +72,7 @@ $ doctl compute image list-user | grep "openSUSE-Leap-15.6-Minimal"
 $ cat terraform.tfvars
 prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
-os_image_id          = "179519713"
+os_image_name        = "openSUSE-Leap-15.6"
 region               = "fra1"
 harvester_node_count = 3
 ```
@@ -118,7 +110,7 @@ harvester_node_count = 3
 $ cat terraform.tfvars
 prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
-os_image_id          = "179519713"
+os_image_name        = "openSUSE-Leap-15.6"
 region               = "fra1"
 harvester_node_count = 3
 rancher_api_url      = "<RANCHER_URL>"        # https://rancher.example.com
@@ -147,7 +139,7 @@ rancher_insecure     = true
 $ cat terraform.tfvars
 prefix               = "glovecchio"
 do_token             = "<DIGITALOCEAN_TOKEN>"
-os_image_id          = "180949249"
+os_image_id          = "openSUSE-Leap-15.6"
 region               = "fra1"
 harvester_node_count = 3
 data_disk_count      = 4
