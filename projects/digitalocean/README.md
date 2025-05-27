@@ -72,7 +72,7 @@ ssh rancher@<NESTED_VM_IPV4> # The password can be obtained from variable harves
 $ cat terraform.tfvars
 prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
-os_image_name          = "openSUSE-Leap-15.6"
+os_image_name        = "openSUSE-Leap-15.6"
 region               = "fra1"
 harvester_node_count = 3
 ```
@@ -110,7 +110,7 @@ harvester_node_count = 3
 $ cat terraform.tfvars
 prefix               = "jlagos"
 do_token             = "<DIGITALOCEAN_TOKEN>"
-os_image_name          = "openSUSE-Leap-15.6"
+os_image_name        = "openSUSE-Leap-15.6"
 region               = "fra1"
 harvester_node_count = 3
 rancher_api_url      = "<RANCHER_URL>"        # https://rancher.example.com
