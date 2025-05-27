@@ -4,7 +4,6 @@
 - Edit `./terraform.tfvars`
   - Update the required variables:
     - `prefix` to give the resources an identifiable name (e.g., your initials or first name)
-    - `os_image_id` to specify the openSUSE image ID uploaded to your DigitalOcean account
     - `do_token` to specify the DigitalOcean API token used to create resources
     - `region` to specify the DigitalOcean region where resources will be created
     - `harvester_node_count` to specify the number of Harvester nodes to create (1 or 3)
