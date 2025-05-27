@@ -100,7 +100,7 @@ module "harvester_node" {
   data_disk_count      = var.harvester_node_count * var.data_disk_count
   data_disk_size       = var.data_disk_size
   startup_script       = local.sles_startup_script_file
-  os_image_id          = var.os_image_id
+  os_image_name        = var.os_image_name
 }
 
 data "local_file" "ssh_private_key" {

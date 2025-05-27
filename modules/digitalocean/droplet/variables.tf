@@ -4,10 +4,10 @@ variable "prefix" {
   default     = "do-tf"
 }
 
-variable "os_image_id" {
-  description = "Specifies the custom OpenSUSE image uploaded to the DigitalOcean account. Default is 'null'."
+variable "os_image_name" {
+  description = "Specifies the name of the OpenSUSE image uploaded to the DigitalOcean account. Default is 'openSUSE-Leap-15.6'."
   type        = string
-  default     = null
+  default     = "openSUSE-Leap-15.6"
 }
 
 variable "region" {

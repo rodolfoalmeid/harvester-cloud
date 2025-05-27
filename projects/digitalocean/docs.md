@@ -12,8 +12,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_local"></a> [local](#provider\_local) | n/a |
-| <a name="provider_null"></a> [null](#provider\_null) | n/a |
+| <a name="provider_local"></a> [local](#provider\_local) | 2.5.3 |
+| <a name="provider_null"></a> [null](#provider\_null) | 3.2.4 |
 | <a name="provider_rancher2"></a> [rancher2](#provider\_rancher2) | 7.0.0 |
 | <a name="provider_ssh"></a> [ssh](#provider\_ssh) | 2.7.0 |
 
@@ -54,7 +54,7 @@
 | <a name="input_harvester_password"></a> [harvester\_password](#input\_harvester\_password) | Specifies the password used to access the Harvester nodes. Default is 'SecretPassword.123'. | `string` | `"SecretPassword.123"` | no |
 | <a name="input_harvester_version"></a> [harvester\_version](#input\_harvester\_version) | Specifies the Harvester version. Default is 'v1.5.0'. | `string` | `"v1.5.0"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Specifies the name of the DigitalOcean Droplet type. Default is 'g-16vcpu-64gb'. | `string` | `"g-16vcpu-64gb"` | no |
-| <a name="input_os_image_id"></a> [os\_image\_id](#input\_os\_image\_id) | Specifies the custom openSUSE image uploaded to the DigitalOcean account. Default is 'null'. | `string` | `null` | no |
+| <a name="input_os_image_name"></a> [os\_image\_name](#input\_os\_image\_name) | Specifies the name of the OpenSUSE image uploaded to the DigitalOcean account. Default is 'openSUSE-Leap-15.6'. | `string` | `"openSUSE-Leap-15.6"` | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Specifies the prefix added to the names of all resources. Default is 'do-tf'. | `string` | `"do-tf"` | no |
 | <a name="input_rancher_access_key"></a> [rancher\_access\_key](#input\_rancher\_access\_key) | Specifies the Rancher access key for authentication. Default is empty. | `string` | `""` | no |
 | <a name="input_rancher_api_url"></a> [rancher\_api\_url](#input\_rancher\_api\_url) | Specifies the Rancher API endpoint used to manage the Harvester cluster. Default is empty. | `string` | `""` | no |

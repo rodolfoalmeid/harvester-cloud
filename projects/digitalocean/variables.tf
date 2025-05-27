@@ -10,9 +10,9 @@ variable "do_token" {
   default     = null
 }
 
-variable "os_image_id" {
+variable "os_image_name" {
   type        = string
-  description = "The custom openSUSE image uploaded to the DigitalOcean account"
+  description = "Specifies the name of the OpenSUSE image uploaded to the DigitalOcean account. Default is 'openSUSE-Leap-15.6'."
   default     = "openSUSE-Leap-15.6"
   nullable    = false
 }
