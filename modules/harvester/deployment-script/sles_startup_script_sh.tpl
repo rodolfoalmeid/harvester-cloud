@@ -11,7 +11,7 @@ sudo mkdir -p /srv/www/harvester
 sudo curl -L -o /etc/nginx/nginx.conf \
   https://raw.githubusercontent.com/rancher/harvester-cloud/refs/heads/main/modules/harvester/deployment-script/nginx_conf.tpl
 sudo curl -L -o /srv/www/harvester/vlan1.xml \
-  https://raw.githubusercontent.com/rancher/harvester-cloud/refs/heads/main/modules/harvester/deployment-script/qemu_vlan1_xml.tpl
+  https://raw.githubusercontent.com/rodolfoalmeid/harvester-cloud/refs/heads/main/modules/harvester/deployment-script/qemu_vlan1_xml.tpl
 sudo curl -L -o /etc/systemd/system/socat-proxy.service \
   https://raw.githubusercontent.com/rancher/harvester-cloud/refs/heads/main/modules/harvester/deployment-script/socat_proxy_service.tpl
 sudo curl -L -o /usr/local/bin/restart_harvester_vms_script.sh \
